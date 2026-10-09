@@ -1,1 +1,0 @@
-ArtPlacer website templates
