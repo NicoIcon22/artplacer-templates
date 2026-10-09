@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>ArtPlacer Website Templates</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f5f2;--fg:#151515;--mute:#6d6a65;--line:#e2dfd8;--card:#fff;--red:#e31e37}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121212;--fg:#efede9;--mute:#9a968f;--line:#2a2a2a;--card:#1b1b1b}}
+:root[data-theme="dark"]{--bg:#121212;--fg:#efede9;--mute:#9a968f;--line:#2a2a2a;--card:#1b1b1b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:400 15px/1.55 Inter,system-ui,sans-serif}
+a{color:inherit}
+.w{max-width:1240px;margin:0 auto;padding:0 16px}
+header{padding:56px 0 32px}
+.k{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+h1{font-size:clamp(32px,5vw,56px);line-height:1.05;letter-spacing:-.025em;margin:10px 0 14px}
+.lead{font-size:18px;color:var(--mute);max-width:760px;margin:0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;margin:40px 0 64px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.shots{position:relative;display:block;aspect-ratio:16/10;overflow:hidden;background:#000}
+.shots img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;opacity:0;transition:opacity .5s}
+.shots img.on{opacity:1}
+.tabs{display:flex;gap:6px;padding:12px 18px 0;flex-wrap:wrap}
+.tabs button{border:1px solid var(--line);background:none;color:var(--mute);border-radius:99px;padding:5px 12px;font:500 12px Inter,sans-serif;cursor:pointer}
+.tabs button.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.body{padding:16px 22px 22px;display:flex;flex-direction:column;gap:10px;flex:1}
+.body h2{margin:0;font-size:24px;letter-spacing:-.015em}.body h2 span{font-size:13px;font-weight:500;color:var(--mute);margin-left:8px;letter-spacing:0}
+.body p{margin:0;color:var(--mute)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}.chips span{font-size:12px;border:1px solid var(--line);border-radius:6px;padding:3px 8px}
+.open{margin-top:auto;display:inline-flex;align-self:flex-start;gap:8px;align-items:center;background:var(--fg);color:var(--bg);text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600;font-size:14px}
+.open:hover{opacity:.85}
+.info{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;margin-bottom:72px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px}
+.panel h3{margin:0 0 14px;font-size:17px}
+.tree{list-style:none;margin:0;padding:0;font-size:14px}.tree ul{list-style:none;margin:2px 0 4px;padding-left:18px;border-left:1px solid var(--line)}
+.tree li{padding:3px 0}.tree li::before{content:"— ";color:var(--mute)}
+.ap{color:var(--red);font-weight:600}
+code{display:block;white-space:pre-wrap;word-break:break-all;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px;font:12px/1.5 ui-monospace,Menlo,monospace;margin:8px 0 14px}
+.note{font-size:13px;color:var(--mute)}
+@media (max-width:860px){.grid,.info{grid-template-columns:1fr}}
+</style>
+</head><body><div class="w">
+<header><div class="k">ArtPlacer · Website templates</div><h1>Four gallery website templates, with ArtPlacer built in</h1>
+<p class="lead">Each template has the full site structure: artists with their own bio, artworks, exhibitions, news, social links and contact pages, plus gallery-wide Exhibitions, News and an Artworks page for selling works, books and objects. Every artwork page carries the ArtPlacer widget, and exhibition pages can embed an ArtPlacer Virtual Exhibition.</p></header>
+<div class="grid" id="grid"></div>
+<div class="info">
+<div class="panel"><h3>Site map (identical in all four templates)</h3>
+<ul class="tree"><li>Home</li><li>Artists<ul><li>Artist page (overview)<ul><li>Biography + CV</li><li>Artworks<ul><li>Artwork: image, material, year, size, price · <span class="ap">ArtPlacer buttons</span>: View in AR · View in sample room · Try in your room</li></ul></li><li>Exhibitions<ul><li>Exhibition: dates, description, installation views · <span class="ap">Virtual Exhibition</span> (optional)</li></ul></li><li>News list<ul><li>News article</li></ul></li><li>Social media &amp; external links</li><li>Contact (with artwork enquiry)</li></ul></li></ul></li>
+<li>Exhibitions: current / upcoming / past filter · <span class="ap">Virtual Exhibition</span> (optional)</li><li>News</li><li>Artworks (sales): originals, editions, books, objects · product pages · cart</li><li>Contact</li></ul></div>
+<div class="panel"><h3>ArtPlacer widgets used</h3>
+<p class="note">Every page that has widgets loads the ArtPlacer script once, before the template code:</p>
+<code>&lt;script src="https://widget.artplacer.com/js/script.js"&gt;&lt;/script&gt;</code>
+<p class="note"><b>View in sample room</b> runs the live ArtPlacer Sample Room widget, inserted on each artwork page with:</p>
+<code>ArtPlacer.insert({ gallery: "1", type: "2", space: "73591", additional_spaces: "73591,73863,295986", artwork: "701308", unit: "in", catalog: "false", … })</code>
+<p class="note">The template's own themed button triggers ArtPlacer's button, and the widget is re-inserted on every page change. <b>View in AR</b> and <b>Try in your room</b> show preview images for now.</p>
+<p class="note">Exhibition pages where Virtual Exhibition is enabled:</p>
+<code>&lt;iframe width="100%" height="450" src="https://d7mntklkfre1v.cloudfront.net/virtual-exhibitions/?i=22084" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;</code>
+<p class="note">This hosted preview blocks outside scripts, so the live Sample Room only runs once the files are on a web server, and on a domain the ArtPlacer gallery is authorised for.</p></div>
+</div></div>
+<script>
+const T=[
+ {k:'lumen',n:'Lumen',s:'Ultra-minimal',d:'White space, small type and a top navigation bar. Artwork comes first, with no visual noise. Suits contemporary galleries and artist estates.',c:['Manrope sans','Top nav','Grid layouts','Underlined tabs']},
+ {k:'nocturne',n:'Nocturne',s:'Dark & cinematic',d:'Full-bleed hero slideshow, condensed display type and a full-screen overlay menu. Works sit on a dark spotlit stage. Suits photography and bold imagery.',c:['Archivo condensed','Overlay menu','Auto slideshow','Dark mode']},
+ {k:'salon',n:'Salon',s:'Classic & elegant',d:'Warm ivory paper, a serif face, a centered masthead and gilt-framed works with museum-style labels. Suits established, secondary-market and traditional galleries.',c:['Cormorant serif','Centered masthead','Framed works','Sidebar artist nav']},
+ {k:'kinetic',n:'Kinetic',s:'Bold editorial',d:'A fixed side rail, oversized type, scattered asymmetric grids, a marquee ticker and an accent color. Suits young, design-led spaces.',c:['Syne display','Side rail nav','Scattered grid','Marquee']}];
+const g=document.getElementById('grid');
+g.innerHTML=T.map(t=>`<article class="card"><a class="shots" href="${t.k}.html" target="_blank" rel="noopener" aria-label="Open ${t.n} in a new tab">${['home','work','exhibition'].map((v,i)=>`<img src="img/${t.k}-${v}.jpg" alt="${t.n} ${v} page" class="${i?'':'on'}">`).join('')}</a>
+<div class="tabs">${['Home','Artwork','Exhibition'].map((v,i)=>`<button data-i="${i}" class="${i?'':'on'}">${v}</button>`).join('')}</div>
+<div class="body"><h2>${t.n}<span>${t.s}</span></h2><p>${t.d}</p><div class="chips">${t.c.map(x=>`<span>${x}</span>`).join('')}</div><a class="open" href="${t.k}.html" target="_blank" rel="noopener">Open template ↗</a></div></article>`).join('');
+g.querySelectorAll('.card').forEach(c=>c.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{c.querySelectorAll('.tabs button,.shots img').forEach(x=>x.classList.remove('on'));b.classList.add('on');c.querySelectorAll('.shots img')[b.dataset.i].classList.add('on');}));
+</script>
+</body></html>

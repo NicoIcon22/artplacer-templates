@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nocturne — ArtPlacer Website Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=Nunito+Sans:wght@700;800&display=swap" rel="stylesheet">
+<style>*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+input,textarea,select{font:inherit;color:inherit}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.ico{display:inline-flex;width:1.1em;height:1.1em;vertical-align:-.18em}
+.ico svg{width:100%;height:100%}
+/* ArtPlacer slots */
+.ap-slot{position:relative}
+.ap-embed:empty{display:none}
+.ap-fallback{display:none}
+body.ap-offline .ap-slot .ap-fallback{display:flex;flex-direction:column;gap:.6rem;padding:1.1rem 1.2rem;border:1px dashed currentColor;opacity:.75;font-size:.82rem;line-height:1.4}
+body.ap-offline .ap-slot--ve .ap-fallback{min-height:220px;justify-content:center;align-items:center;text-align:center}
+.ap-fb-title{font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:.72rem}
+.ap-fb-pills{display:flex;flex-wrap:wrap;gap:.4rem}
+.ap-fb-pills span{border:1px solid currentColor;padding:.35rem .7rem;border-radius:99px;font-size:.75rem}
+.ap-fb-note{opacity:.7;font-size:.75rem}
+/* toast */
+#ap-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#111;color:#fff;padding:.7rem 1.1rem;font:500 14px/1 system-ui,sans-serif;transition:.25s;z-index:999;border-radius:4px}
+#ap-toast.on{opacity:1;transform:translate(-50%,0)}
+/* template badge */
+.tpl-badge{position:fixed;right:14px;bottom:14px;z-index:900;display:flex;gap:.5rem;align-items:center;background:rgba(17,17,17,.92);color:#fff;font:500 12px/1 system-ui,sans-serif;padding:.55rem .75rem;border-radius:99px;text-decoration:none;box-shadow:0 4px 18px rgba(0,0,0,.2)}
+.tpl-badge b{font-weight:700}
+.form-thanks{padding:1.2rem 0;font-size:1.05rem}
+.ap-ve{position:relative;width:100%;background:#000;line-height:0}
+.ap-ve iframe{display:block;width:100%;height:clamp(320px,62vh,640px);border:0}
+/* ArtPlacer button grid (per graphic) */
+.ap-hidden{display:none!important}
+body.ap-offline .ap-slot .ap-fallback{display:none}
+.apb-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;max-width:420px}
+.apb{display:flex;align-items:center;justify-content:center;gap:10px;min-height:44px;padding:10px 14px;background:#f4f4f4;color:#111;border:0;border-radius:0;font:800 13px/1.15 "Nunito Sans",system-ui,sans-serif;letter-spacing:.01em;text-transform:uppercase;text-align:center;cursor:pointer;transition:background .15s}
+.apb:hover{background:#e8e8e8}.apb:focus-visible{outline:2px solid #111;outline-offset:2px}
+.apb-ico{display:inline-flex;width:22px;height:22px;flex:none}.apb-ico svg{width:100%;height:100%}
+/* popup */
+body.apm-open{overflow:hidden}
+.apm{position:fixed;inset:0;z-index:1000;background:rgba(10,10,10,.62);display:flex;align-items:center;justify-content:center;padding:16px;animation:apmf .2s}
+@keyframes apmf{from{opacity:0}}
+.apm-box{background:#fff;color:#111;width:min(920px,100%);max-height:calc(100vh - 32px);overflow:auto;font:400 14px/1.5 "Nunito Sans",system-ui,sans-serif;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.apm-hd{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;padding:16px 20px;border-bottom:1px solid #eee}
+.apm-hd b{display:block;font-weight:800;text-transform:uppercase;font-size:15px}.apm-hd span{color:#666;font-size:13px}
+.apm-x{background:none;border:0;width:32px;height:32px;padding:4px;color:#111;cursor:pointer;flex:none}.apm-x svg{width:100%;height:100%}
+.apm-ft{padding:10px 20px;border-top:1px solid #eee;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#999;text-align:right}
+.apm-main{display:block;width:100%;height:auto}
+.apm-sr .apm-thumbs{display:flex;gap:8px;padding:12px 20px}.apm-thumbs button{border:2px solid transparent;padding:0;background:none;width:96px;cursor:pointer}.apm-thumbs button.on{border-color:#111}.apm-thumbs img{display:block;width:100%}
+.apm-ar{display:grid;grid-template-columns:minmax(0,260px) 1fr;gap:32px;padding:28px;align-items:center;background:#f7f7f7}
+.apm-phone{width:100%;max-width:260px;margin:0 auto}
+.apm-ar h4{font-size:22px;margin:0 0 12px;font-weight:800}.apm-ar ol{padding-left:18px;margin:0 0 20px}.apm-ar li{margin-bottom:6px}
+.apm-qr{display:grid;grid-template-columns:repeat(7,14px);gap:2px;padding:10px;background:#fff;width:max-content;border:1px solid #ddd}.apm-qr i{width:14px;height:14px;background:#111}
+.apm-yr{padding:20px}
+.apm-drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:340px;border:2px dashed #ccc;background:#fafafa;cursor:pointer;text-align:center;padding:20px}
+.apm-drop b{font-size:16px;text-transform:uppercase;font-weight:800}.apm-drop span{color:#777;font-size:13px}.apm-drop:hover{border-color:#111}
+.apm-stage{position:relative;overflow:hidden;background:#000;touch-action:none}.apm-stage .apm-bg{display:block;width:100%}
+.apm-art{position:absolute;transform:translate(-50%,-50%);box-shadow:0 10px 24px rgba(0,0,0,.35);cursor:grab;max-width:none}
+.apm-ctl{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-top:12px;color:#666;font-size:13px}.apm-ctl label{display:flex;gap:10px;align-items:center}
+@media (max-width:640px){.apm-ar{grid-template-columns:1fr;padding:20px}.apm-phone{max-width:200px}.apm-qr{display:none}.apb{font-size:12px;padding:10px}}
+.apm [hidden]{display:none!important}
+.apm-imgwrap{display:flex;justify-content:center;background:#f4f4f4}
+.apm-img{display:block;max-width:100%;height:auto;max-height:calc(100vh - 160px);width:auto}
+.apm[data-mode=sample] .apm-box{width:min(560px,100%)}
+.apm[data-mode=room] .apm-box,.apm[data-mode=ar] .apm-box{width:min(760px,100%)}
+/* the live ArtPlacer button is triggered by the themed "View in sample room" button */
+.ap-slot .ap-anchor,.ap-slot .ap-anchor~*{display:none!important}
+.ap-slot .artplacer-button{display:none!important}
+
+:root{--bg:#0b0b0c;--bg2:#141416;--fg:#f2f0ec;--dim:#8c8a86;--line:#26262a;--acc:#d8c7a3;--pad:clamp(16px,4vw,64px)}
+body{background:var(--bg);color:var(--fg);font:300 16px/1.6 "Archivo",system-ui,sans-serif;font-stretch:100%;-webkit-font-smoothing:antialiased}
+a{text-decoration:none}
+.dim{color:var(--dim)}
+h1,h2,h3,.logo,.ft-big,.overlay nav a{font-stretch:62%;font-weight:800;text-transform:uppercase;letter-spacing:-.01em;line-height:.92;margin:0}
+.tag{display:block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--acc);font-weight:500;margin:0 0 10px}
+.wrap{padding:0 var(--pad);max-width:1600px;margin:0 auto}
+section{margin-bottom:110px}
+.hd{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;padding:22px var(--pad);background:linear-gradient(var(--bg),rgba(11,11,12,.0));}
+.hd:not(.over){background:var(--bg);border-bottom:1px solid var(--line)}
+.logo{font-size:28px;letter-spacing:.06em}
+.hd-r{display:flex;gap:22px;align-items:center}
+.cartb{display:flex;gap:6px;align-items:center;font-size:14px}
+.menub{background:none;border:1px solid var(--fg);border-radius:99px;padding:7px 18px;font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+main{padding-top:0}
+body:not([data-route=home]):not([data-route=exhibition]) main{padding-top:84px}
+body[data-route=artist] main,body[data-route=bio] main,body[data-route=works] main,body[data-route=artistExhibitions] main,body[data-route=artistNews] main,body[data-route=links] main,body[data-route=artistContact] main{padding-top:0}
+.overlay{position:fixed;inset:0;z-index:80;background:#050505;display:flex;flex-direction:column;justify-content:center;padding:0 var(--pad);opacity:0;pointer-events:none;transition:opacity .35s}
+body.menu-open .overlay{opacity:1;pointer-events:auto}
+.overlay nav{display:flex;flex-direction:column;gap:6px}
+.overlay nav a{font-size:clamp(48px,9vw,120px);display:flex;align-items:flex-start;gap:16px;transition:color .2s}
+.overlay nav a small{font-size:13px;letter-spacing:.1em;color:var(--dim);font-weight:400;padding-top:12px}
+.overlay nav a:hover,.overlay nav a.on{color:var(--acc)}
+.closeb{position:absolute;top:22px;right:var(--pad);background:none;border:0;font-size:30px}
+.ov-ft{position:absolute;bottom:32px;font-size:13px}
+.slides{position:relative;height:100vh;min-height:560px;overflow:hidden}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s}
+.slide.on{opacity:1}
+.slide img{width:100%;height:100%;object-fit:cover;transform:scale(1.04);transition:transform 6s}
+.slide.on img{transform:scale(1)}
+.slide::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(0,0,0,.75))}
+.slide-txt{position:absolute;z-index:2;left:var(--pad);bottom:90px;right:var(--pad)}
+.slide-txt h2{font-size:clamp(56px,11vw,180px)}
+.slide-txt p{margin:14px 0 0;font-size:17px}
+.dots{position:absolute;z-index:3;bottom:40px;left:var(--pad);display:flex;gap:10px}
+.dots button{width:36px;height:2px;border:0;background:rgba(255,255,255,.35);padding:0}
+.dots button.on{background:var(--fg)}
+.sh{display:flex;justify-content:space-between;align-items:baseline;margin:96px 0 32px;border-bottom:1px solid var(--line);padding-bottom:14px}
+.sh h2{font-size:clamp(28px,3vw,44px)}
+.sh a{font-size:13px;letter-spacing:.12em;text-transform:uppercase;display:flex;gap:8px;align-items:center}
+.names a{position:relative;display:block;border-bottom:1px solid var(--line);padding:18px 0}
+.names span{font-stretch:62%;font-weight:800;text-transform:uppercase;font-size:clamp(36px,6vw,88px);line-height:1;color:var(--dim);transition:color .25s}
+.names img{position:absolute;right:8%;top:50%;width:220px;transform:translateY(-50%) rotate(-3deg);opacity:0;transition:.35s;pointer-events:none;z-index:2}
+.names a:hover span{color:var(--fg)}.names a:hover img{opacity:1;transform:translateY(-50%) rotate(0)}
+.exrow{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;padding:32px 0;border-bottom:1px solid var(--line);align-items:center}
+.exrow-img{overflow:hidden}.exrow img{width:100%;aspect-ratio:16/9;object-fit:cover;transition:transform .6s}
+.exrow:hover img{transform:scale(1.04)}
+.exrow h3{font-size:clamp(36px,4.6vw,72px);margin-bottom:12px}
+.exrow p{margin:4px 0}.exrow .ico{margin-top:20px;font-size:26px}
+.ve-band{position:relative;min-height:70vh;display:flex;align-items:center;padding:0 var(--pad)}
+.ve-band>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.3}.ve-band::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 20%,transparent)}
+.ve-band>div{position:relative;max-width:640px}.ve-band h2{font-size:clamp(44px,6vw,96px);margin-bottom:16px}
+.btn{display:inline-flex;gap:10px;align-items:center;background:var(--fg);color:var(--bg);border:1px solid var(--fg);padding:14px 26px;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;border-radius:99px}
+.btn:hover{background:var(--acc);border-color:var(--acc)}
+.btn-g{background:none;color:var(--fg)}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.nc-img{overflow:hidden;margin-bottom:16px}.nc img{width:100%;aspect-ratio:4/3;object-fit:cover;transition:transform .6s}.nc:hover img{transform:scale(1.05)}
+.nc h3{font-size:26px;line-height:1}
+.phd{padding:80px var(--pad) 40px}.phd h1{font-size:clamp(64px,12vw,200px)}.phd p{margin:12px 0 0}
+.ag{display:grid;grid-template-columns:repeat(3,1fr);gap:48px 32px}
+.ac img{width:100%;aspect-ratio:3/4;object-fit:cover;filter:grayscale(.6) brightness(.85);transition:.5s}
+.ac:hover img{filter:none}.ac h3{font-size:34px;margin:16px 0 6px}.ac p{margin:0;font-size:14px}
+.ahero{position:relative;height:78vh;min-height:480px;margin:0;overflow:hidden}
+.ahero>img{width:100%;height:100%;object-fit:cover;filter:brightness(.5) blur(2px);transform:scale(1.05)}
+.ahero-in{position:absolute;left:var(--pad);bottom:48px;right:var(--pad)}
+.ahero h1{font-size:clamp(60px,12vw,190px);margin:12px 0}
+.subnav{position:sticky;top:76px;z-index:40;display:flex;gap:6px;overflow-x:auto;padding:14px var(--pad);background:rgba(11,11,12,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-bottom:64px;scrollbar-width:none}
+.subnav a{white-space:nowrap;padding:8px 16px;border-radius:99px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.subnav a.on{background:var(--fg);color:var(--bg)}
+.intro{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.lead{font-size:clamp(22px,2.4vw,32px);line-height:1.3;font-weight:300;margin:0}
+.lnk{display:inline-flex;gap:8px;align-items:center;color:var(--acc);font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:56px 40px}
+.tile-img{background:var(--bg2);aspect-ratio:1;display:flex;align-items:center;justify-content:center;padding:14%}
+.tile-img img{max-height:100%;width:auto;box-shadow:0 18px 40px rgba(0,0,0,.6);transition:transform .4s}
+.tile:hover img{transform:translateY(-6px)}
+.tile-cap{display:flex;justify-content:space-between;gap:12px;padding-top:14px;font-size:14px}
+.socrow{display:flex;gap:28px;flex-wrap:wrap}.socrow a{display:flex;gap:8px;align-items:center}
+.bio{display:grid;grid-template-columns:1fr 2fr;gap:56px}.bio img{width:100%}
+.prose{max-width:680px}.prose p{margin:0 0 1.1em}
+.cv{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:48px;border-top:1px solid var(--line);padding-top:32px}
+.cv h4{margin:0 0 10px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--acc);font-weight:500}.cv p{margin:0 0 6px;font-size:14px}
+.stage{position:relative;height:calc(100vh - 84px);min-height:480px;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#232326,#0b0b0c 70%);margin:0 0 64px}
+.stage img{max-height:76%;max-width:70%;box-shadow:0 30px 70px rgba(0,0,0,.7)}
+.nav-l,.nav-r{position:absolute;top:50%;transform:translateY(-50%);font-size:60px;font-weight:200;color:var(--dim);padding:20px}
+.nav-l{left:var(--pad)}.nav-r{right:var(--pad)}.nav-l:hover,.nav-r:hover{color:var(--fg)}
+.wd{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+.wd-t h1{font-size:clamp(44px,6vw,96px);margin-top:10px}
+.specs{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:0;border-top:1px solid var(--line)}
+.specs div{padding:16px 0;border-bottom:1px solid var(--line)}
+.specs dt{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}.specs dd{margin:4px 0 0;font-size:17px}
+.wd-act{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.apbox{background:var(--bg2);padding:28px;border-left:2px solid var(--acc)}.apbox p{margin:0 0 14px;font-size:14px}
+.xhero{position:relative;height:100vh;min-height:560px;margin-bottom:96px}
+.xhero>img{width:100%;height:100%;object-fit:cover}.xhero::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.3),rgba(0,0,0,.8))}
+.xhero-in{position:absolute;z-index:2;left:var(--pad);right:var(--pad);bottom:64px}.xhero-in>a{display:block;margin-bottom:24px}
+.xhero h1{font-size:clamp(60px,13vw,210px);margin-bottom:14px}.xhero p{margin:4px 0;font-size:18px}
+.vex{background:var(--bg2);padding:4px 0 72px}.vex-box{border:1px solid var(--line);padding:0;background:#0f0f11}
+.mosaic{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:auto auto;gap:16px}.mosaic img{width:100%;height:100%;object-fit:cover}.mosaic img:first-child{grid-row:span 2}
+.art{max-width:860px;margin:0 auto;padding:64px var(--pad) 0}.art>a{display:block;margin-bottom:28px}.art h1{font-size:clamp(40px,6vw,84px);margin-bottom:40px}.art img{width:100%;margin-bottom:40px}
+.rel{display:flex;gap:12px;flex-wrap:wrap;margin-top:40px}
+.socgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.socgrid a{background:var(--bg2);padding:28px;display:grid;gap:8px;transition:background .2s}.socgrid a:hover{background:#1d1d20}.socgrid .ico{font-size:26px}
+.xl{display:grid;grid-template-columns:1fr 1fr auto;gap:24px;padding:22px 0;border-bottom:1px solid var(--line);font-size:18px;align-items:center}.xl:hover{color:var(--acc)}
+.ct2{display:grid;grid-template-columns:1fr 1.4fr;gap:64px}.ct2 p{margin:0 0 28px}
+.form{display:grid;gap:22px}.form .row{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.form label{display:grid;gap:8px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.form input,.form textarea{background:var(--bg2);border:1px solid var(--line);padding:14px;color:var(--fg);font-size:15px;letter-spacing:0;text-transform:none;outline:0}
+.form input:focus,.form textarea:focus{border-color:var(--acc)}.form .btn{justify-self:start}
+.enq{display:flex;gap:16px;align-items:center;margin-bottom:32px;padding:16px;background:var(--bg2)}.enq img{width:72px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:40px}.chips a{border:1px solid var(--line);border-radius:99px;padding:8px 18px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}.chips a.on{border-color:var(--fg);color:var(--fg)}
+.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:40px 28px}
+.pc-img{display:flex;background:var(--bg2);aspect-ratio:4/5;align-items:center;justify-content:center;padding:12%}.pc-img img{max-height:100%;width:auto}
+.pc-info{display:flex;justify-content:space-between;gap:16px;padding-top:14px;font-size:15px}.pc-info>div:first-child{display:grid}
+.pc-buy{text-align:right;display:grid;gap:4px;justify-items:end}.pc-buy button{background:none;border:0;color:var(--acc);font-size:12px;letter-spacing:.14em;text-transform:uppercase;padding:0}
+.stage-p img{max-width:40%}
+.cart{max-width:960px}.ci{display:grid;grid-template-columns:90px 1fr auto 120px;gap:24px;align-items:center;padding:18px 0;border-bottom:1px solid var(--line)}.ci img{width:90px;height:90px;object-fit:cover}
+.qty{display:flex;gap:12px;align-items:center}.qty button{width:32px;height:32px;border-radius:99px;border:1px solid var(--line);background:none}
+.tot{display:flex;justify-content:space-between;font-size:22px;padding:24px 0}
+.ft{border-top:1px solid var(--line);padding:64px var(--pad) 48px}
+.ft-big{font-size:clamp(80px,20vw,320px);color:#1c1c1f;line-height:.8;margin-bottom:48px}
+.ft-cols{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;font-size:14px}.ft-cols a{display:block;margin-bottom:6px}.ft-cols a:hover{color:var(--acc)}
+.nl div{display:flex;border-bottom:1px solid var(--fg)}.nl input{flex:1;background:none;border:0;padding:10px 0;outline:0}.nl button{background:none;border:0}
+.form-thanks{color:var(--acc)}
+.artplacer-button{background:var(--fg)!important;color:var(--bg)!important;border-radius:99px!important;font-family:inherit!important;letter-spacing:.16em!important;font-size:11px!important;font-weight:600!important}
+@media (max-width:900px){.exrow,.intro,.bio,.wd,.wd-act,.ct2{grid-template-columns:1fr}.tiles,.pg,.ag,.g3,.socgrid{grid-template-columns:1fr 1fr}.ft-cols{grid-template-columns:1fr 1fr}.cv{grid-template-columns:1fr}.names img{display:none}.stage img{max-width:80%}}
+@media (max-width:600px){.tiles,.pg,.ag,.g3,.socgrid,.mosaic,.form .row{grid-template-columns:1fr}.mosaic img:first-child{grid-row:auto}.xl{grid-template-columns:1fr auto}.xl .dim{display:none}
+  .ci{grid-template-columns:64px 1fr}.ci img{width:64px;height:64px}.specs{grid-template-columns:1fr}.subnav{top:74px}.nav-l,.nav-r{font-size:40px;padding:6px}.stage-p img{max-width:70%}}
+/* ArtPlacer buttons — Nocturne */
+.apb-grid{gap:12px;max-width:460px}
+.apb{background:transparent;color:var(--fg);border:1px solid var(--fg);border-radius:99px;font:600 11px/1.2 "Archivo",sans-serif;letter-spacing:.16em;text-transform:uppercase;min-height:46px;padding:10px 18px}
+.apb:hover{background:var(--acc);border-color:var(--acc);color:var(--bg)}
+.apm-box{background:#141416;color:var(--fg);font-family:"Archivo",sans-serif}.apm-hd,.apm-ft{border-color:var(--line)}.apm-hd b{font-stretch:62%;font-weight:800;font-size:22px;letter-spacing:0}.apm-hd span{color:var(--dim)}.apm-x{color:var(--fg)}.apm-imgwrap{background:#0b0b0c}
+</style></head>
+<body class="t-nocturne"><div id="app"></div>
+<a class="tpl-badge" href="index.html">ArtPlacer template · <b>Nocturne</b> · All templates</a>
+<script src="https://widget.artplacer.com/js/script.js"></script>
+<script>/* ArtPlacer Website Templates — shared core (data, generative imagery, router, cart, widgets) */
+(function () {
+  'use strict';
+
+  /* ---------- utilities ---------- */
+  function hash(str) { let h = 1779033703 ^ str.length; for (let i = 0; i < str.length; i++) { h = Math.imul(h ^ str.charCodeAt(i), 3432918353); h = (h << 13) | (h >>> 19); } return h >>> 0; }
+  function rng(seed) { let a = hash(String(seed)); return function () { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const TODAY = new Date('2026-10-07T12:00:00');
+  const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const MON = MONTHS.map(m => m.slice(0, 3));
+  const d = s => new Date(s + 'T12:00:00');
+  function fmtDate(s, short) { const x = d(s); return (short ? MON : MONTHS)[x.getMonth()] + ' ' + x.getDate() + ', ' + x.getFullYear(); }
+  function fmtRange(a, b) { const x = d(a), y = d(b); if (x.getFullYear() === y.getFullYear()) return MON[x.getMonth()] + ' ' + x.getDate() + ' – ' + MON[y.getMonth()] + ' ' + y.getDate() + ', ' + y.getFullYear(); return fmtDate(a, 1) + ' – ' + fmtDate(b, 1); }
+  const money = n => '$' + Number(n).toLocaleString('en-US');
+
+  /* ---------- generative artwork (seeded SVG) ---------- */
+  const cache = new Map();
+  const uri = svg => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  const grain = (id, op) => `<filter id="g${id}"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 ${op} 0"/></filter>`;
+  function blob(cx, cy, r, R, n) { const pts = []; for (let i = 0; i < n; i++) { const a = i / n * Math.PI * 2, rr = r * (0.65 + R() * 0.6); pts.push([cx + Math.cos(a) * rr, cy + Math.sin(a) * rr]); }
+    let p = `M${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)}`; for (let i = 0; i < n; i++) { const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
+      const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6], c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+      p += `C${c1[0].toFixed(1)},${c1[1].toFixed(1)} ${c2[0].toFixed(1)},${c2[1].toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`; } return p + 'Z'; }
+
+  function artSVG(seed, style, pal, W, H) {
+    const R = rng(seed), pick = () => pal[Math.floor(R() * pal.length)], id = hash(seed) % 99999;
+    let body = '', defs = grain(id, 0.09);
+    if (style === 'field') {
+      defs += `<filter id="b${id}" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="${W / 70}"/></filter>`;
+      const bi = Math.floor(R() * pal.length), bg = pal[bi]; body += `<rect width="${W}" height="${H}" fill="${bg}"/>`;
+      const n = 1 + Math.floor(R() * 3), others = pal.filter((_, j) => j !== bi); let y = H * 0.07; const gap = H * 0.05, hh = (H - y * 2 - gap * (n - 1)) / n;
+      for (let i = 0; i < n; i++) { body += `<rect x="${W * 0.08}" y="${y}" width="${W * 0.84}" height="${hh * (0.85 + R() * 0.25)}" rx="${W * 0.02}" fill="${others[Math.floor(R() * others.length)]}" opacity="${0.82 + R() * 0.18}" filter="url(#b${id})"/>`; y += hh + gap; }
+    } else if (style === 'geo') {
+      body += `<rect width="${W}" height="${H}" fill="${pal[0]}"/>`;
+      const n = 6 + Math.floor(R() * 6);
+      for (let i = 0; i < n; i++) { const t = R(), x = R() * W, y = R() * H, s = (0.12 + R() * 0.32) * Math.min(W, H), c = pal[1 + Math.floor(R() * (pal.length - 1))];
+        if (t < .35) body += `<circle cx="${x}" cy="${y}" r="${s / 2}" fill="${c}"/>`;
+        else if (t < .7) body += `<rect x="${x - s / 2}" y="${y - s / 2}" width="${s * (0.4 + R())}" height="${s * (0.3 + R() * .7)}" fill="${c}" transform="rotate(${[0, 0, 90, 45][Math.floor(R() * 4)]} ${x} ${y})"/>`;
+        else body += `<path d="M${x - s / 2},${y} A${s / 2},${s / 2} 0 0 1 ${x + s / 2},${y} Z" fill="${c}" transform="rotate(${Math.floor(R() * 4) * 90} ${x} ${y})"/>`; }
+      body += `<line x1="0" y1="${H * (0.2 + R() * .6)}" x2="${W}" y2="${H * (0.2 + R() * .6)}" stroke="${pal[pal.length - 1]}" stroke-width="${W / 120}"/>`;
+    } else if (style === 'lines') {
+      body += `<rect width="${W}" height="${H}" fill="${pal[0]}"/>`;
+      const n = 60 + Math.floor(R() * 40), amp = H * (0.02 + R() * 0.05), f = 2 + R() * 4, ph = R() * 6;
+      for (let i = 0; i < n; i++) { const y0 = H * 0.06 + i * (H * 0.88 / n); let p = `M${W * 0.06},${y0}`;
+        for (let x = 0; x <= 40; x++) { const xx = W * 0.06 + x * (W * 0.88 / 40); p += ` L${xx.toFixed(1)},${(y0 + Math.sin(x / 40 * f * Math.PI + ph + i * 0.08) * amp * Math.sin(i / n * Math.PI)).toFixed(1)}`; }
+        body += `<path d="${p}" fill="none" stroke="${i % 9 === 0 ? pal[2 % pal.length] : pal[1]}" stroke-width="${W / 520}" opacity=".85"/>`; }
+    } else if (style === 'organic') {
+      defs += `<filter id="b${id}"><feGaussianBlur stdDeviation="${W / 300}"/></filter>`;
+      body += `<rect width="${W}" height="${H}" fill="${pal[0]}"/>`;
+      const n = 4 + Math.floor(R() * 4);
+      for (let i = 0; i < n; i++) body += `<path d="${blob(R() * W, R() * H, (0.15 + R() * 0.3) * Math.min(W, H), R, 7)}" fill="${pal[1 + Math.floor(R() * (pal.length - 1))]}" opacity="${0.7 + R() * 0.3}" filter="url(#b${id})"/>`;
+      for (let i = 0; i < 3; i++) body += `<circle cx="${R() * W}" cy="${R() * H}" r="${W * 0.012}" fill="${pal[pal.length - 1]}"/>`;
+    } else if (style === 'horizon') {
+      defs += `<linearGradient id="s${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${pal[0]}"/><stop offset="1" stop-color="${pal[1]}"/></linearGradient>`;
+      body += `<rect width="${W}" height="${H}" fill="url(#s${id})"/><circle cx="${W * (0.25 + R() * 0.5)}" cy="${H * (0.25 + R() * 0.2)}" r="${W * (0.08 + R() * 0.08)}" fill="${pal[2]}" opacity=".9"/>`;
+      for (let L = 0; L < 4; L++) { const base = H * (0.5 + L * 0.13); let p = `M0,${H} L0,${base}`; for (let x = 0; x <= 12; x++) p += ` L${x * W / 12},${base - R() * H * 0.08}`; p += ` L${W},${H} Z`; body += `<path d="${p}" fill="${pal[3 + L % (pal.length - 3)]}" opacity="${0.75 + L * 0.08}"/>`; }
+    } else { /* grid */
+      body += `<rect width="${W}" height="${H}" fill="${pal[0]}"/>`;
+      const cols = 4 + Math.floor(R() * 3), cw = W / cols, rows = Math.round(H / cw), ch = H / rows;
+      for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) { const x = c * cw, y = r * ch, t = R(), col = pick();
+        body += `<rect x="${x}" y="${y}" width="${cw}" height="${ch}" fill="${col}"/>`;
+        if (t < .4) body += `<path d="M${x},${y} A${cw},${ch} 0 0 1 ${x + cw},${y + ch} L${x},${y + ch}Z" fill="${pick()}" transform="rotate(${Math.floor(R() * 4) * 90} ${x + cw / 2} ${y + ch / 2})"/>`;
+        else if (t < .6) body += `<circle cx="${x + cw / 2}" cy="${y + ch / 2}" r="${Math.min(cw, ch) * 0.32}" fill="${pick()}"/>`; }
+    }
+    body += `<rect width="${W}" height="${H}" filter="url(#g${id})"/>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}"><defs>${defs}</defs>${body}</svg>`;
+  }
+  function artURI(work) { const k = 'w:' + work.id; if (!cache.has(k)) { const a = artistById(work.artist), r = work.h / work.w; cache.set(k, uri(artSVG(work.id, a.style, a.palette, 600, Math.round(600 * r)))); } return cache.get(k); }
+  function portraitURI(a) { const k = 'p:' + a.id; if (!cache.has(k)) { const R = rng(a.id + 'p'), W = 600, H = 750, p = a.palette;
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}"><defs>${grain('p', .12)}<linearGradient id="l" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${p[0]}"/><stop offset="1" stop-color="${p[1]}"/></linearGradient></defs><rect width="${W}" height="${H}" fill="url(#l)"/><rect x="${W * .12}" y="${H * .1}" width="${W * .42}" height="${H * .5}" fill="${p[2]}" opacity=".55"/><ellipse cx="${W * .6}" cy="${H * .38}" rx="${W * .13}" ry="${H * .12}" fill="#1b1b1b" opacity=".82"/><path d="M${W * .32},${H} C${W * .34},${H * .62} ${W * .86},${H * .62} ${W * .88},${H}Z" fill="#1b1b1b" opacity=".82"/><rect x="${W * (0.02 + R() * .05)}" y="${H * .7}" width="${W * .3}" height="${H * .3}" fill="${p[3 % p.length]}" opacity=".5"/><rect width="${W}" height="${H}" filter="url(#gp)"/></svg>`;
+      cache.set(k, uri(svg)); } return cache.get(k); }
+  function roomURI(seed, works, dark) { const k = 'r:' + seed + (dark ? 'd' : ''); if (cache.has(k)) return cache.get(k);
+    const R = rng(seed), W = 1200, H = 750, wall = dark ? '#2a2a2b' : ['#efeeea', '#f3f1ec', '#ebebe8'][Math.floor(R() * 3)], floor = dark ? '#1a1a1a' : ['#b9a58c', '#9b9b98', '#c9bfb0'][Math.floor(R() * 3)];
+    let s = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${W} ${H}"><defs><linearGradient id="w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${wall}"/><stop offset="1" stop-color="${wall}" stop-opacity=".85"/></linearGradient><filter id="sh" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="8" stdDeviation="9" flood-opacity=".28"/></filter><radialGradient id="lt" cx=".5" cy="0" r=".9"><stop offset="0" stop-color="#fff" stop-opacity="${dark ? .12 : .5}"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>`;
+    s += `<rect width="${W}" height="${H}" fill="url(#w)"/><rect width="${W}" height="${H * .72}" fill="url(#lt)"/><rect y="${H * .76}" width="${W}" height="${H * .24}" fill="${floor}"/><rect y="${H * .755}" width="${W}" height="${H * .012}" fill="${dark ? '#111' : '#d9d6cf'}"/>`;
+    const list = works.slice(0, works.length > 2 && R() > .4 ? 3 : 2), gap = W / (list.length + 1);
+    list.forEach((w, i) => { const maxH = H * (0.32 + R() * 0.12), ww = Math.min(gap * 0.7, maxH * w.w / w.h), hh = ww * w.h / w.w, cx = gap * (i + 1), cy = H * 0.42;
+      s += `<image filter="url(#sh)" x="${cx - ww / 2}" y="${cy - hh / 2}" width="${ww}" height="${hh}" preserveAspectRatio="none" href="${artURI(w)}" xlink:href="${artURI(w)}"/>`; });
+    if (R() > .5) s += `<rect x="${W * .38}" y="${H * .8}" width="${W * .24}" height="${H * .04}" fill="${dark ? '#3a3a3a' : '#5b4b3b'}"/><rect x="${W * .4}" y="${H * .84}" width="${W * .015}" height="${H * .08}" fill="${dark ? '#333' : '#4a3d30'}"/><rect x="${W * .585}" y="${H * .84}" width="${W * .015}" height="${H * .08}" fill="${dark ? '#333' : '#4a3d30'}"/>`;
+    s += '</svg>'; cache.set(k, uri(s)); return cache.get(k); }
+  function productURI(p) { const k = 'pr:' + p.id; if (cache.has(k)) return cache.get(k); const R = rng(p.id), W = 600, H = 750; let s = '';
+    const a = p.artist ? artistById(p.artist) : null, pal = a ? a.palette : ['#e9e4da', '#1d1d1d', '#c2532c', '#2f4b6e'];
+    if (p.kind === 'book') { const cov = pal[1], wk = A.works.find(w => w.artist === (a && a.id)) || A.works[0];
+      s = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="#ece9e3"/><g transform="rotate(-4 300 375)"><rect x="128" y="96" width="350" height="500" fill="#000" opacity=".18" transform="translate(14 16)"/><rect x="128" y="96" width="350" height="500" fill="${cov}"/><rect x="128" y="96" width="16" height="500" fill="#000" opacity=".2"/><image x="178" y="170" width="250" height="250" preserveAspectRatio="xMidYMid slice" href="${artURI(wk)}" xlink:href="${artURI(wk)}"/><text x="178" y="470" font-family="Georgia,serif" font-size="26" fill="#fff">${esc(p.cover || p.name)}</text><text x="178" y="505" font-family="Helvetica,Arial,sans-serif" font-size="14" letter-spacing="3" fill="#fff" opacity=".8">${esc((a ? a.name : 'GALLERY EDITIONS').toUpperCase())}</text></g></svg>`;
+    } else if (p.kind === 'edition') { const wk = A.works.find(x => x.id === p.work);
+      s = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="#e7e5e0"/><rect x="104" y="104" width="392" height="520" fill="#000" opacity=".15" transform="translate(8 10)"/><rect x="104" y="104" width="392" height="520" fill="#fbfaf7"/><image x="146" y="146" width="308" height="380" preserveAspectRatio="xMidYMid slice" href="${artURI(wk)}" xlink:href="${artURI(wk)}"/><text x="146" y="580" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#777">${esc(p.edition)}</text></svg>`;
+    } else { const c1 = pal[2 % pal.length], c2 = pal[1];
+      const shape = p.shape === 'tote' ? `<path d="M220,250 C220,150 380,150 380,250" fill="none" stroke="${c2}" stroke-width="14"/><rect x="170" y="250" width="260" height="320" fill="${c1}"/><text x="300" y="430" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="22" letter-spacing="4" fill="${c2}">${esc((p.print || 'GALLERY').toUpperCase())}</text>`
+        : `<path d="M250,190 L350,190 L350,230 C430,270 450,400 400,520 C380,560 220,560 200,520 C150,400 170,270 250,230Z" fill="${c1}"/><path d="M200,400 C260,380 340,420 405,395" fill="none" stroke="${c2}" stroke-width="10" opacity=".7"/><ellipse cx="300" cy="190" rx="50" ry="10" fill="#000" opacity=".25"/>`;
+      s = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="#eceae5"/><ellipse cx="300" cy="575" rx="170" ry="18" fill="#000" opacity=".12"/>${shape}</svg>`; }
+    cache.set(k, uri(s)); return cache.get(k); }
+
+  /* ---------- demo content ---------- */
+  const A = {};
+  A.artists = [
+    { id: 'lucia-ferrer', name: 'Lucía Ferrer', born: 'b. 1984, Buenos Aires', based: 'Lives and works in Madrid', style: 'field', medium: 'Oil on linen', palette: ['#e8d9c4', '#c4572e', '#e3a24b', '#7b2d26', '#f1e6d4'],
+      short: 'Luminous color-field paintings built from dozens of translucent oil glazes.',
+      bio: ['Lucía Ferrer’s paintings are slow accumulations of color. Working on raw linen, she lays down as many as forty transparent glazes, letting each dry before the next, until the fields of ochre, vermilion and rust appear to glow from within.', 'Trained at the Universidad Nacional de las Artes in Buenos Aires and later at the Royal College of Art in London, Ferrer draws on the light of the Pampas and on the Spanish tradition of tenebrism. Her canvases sit between landscape and pure abstraction: horizons dissolve, edges soften, and the viewer is left with temperature rather than image.', 'Her work is held in the collections of MALBA, the Fundación Juan March and the Fondation Carmignac.'],
+      cv: { Education: ['2010 — MA Painting, Royal College of Art, London', '2007 — BFA, Universidad Nacional de las Artes, Buenos Aires'], 'Solo exhibitions': ['2026 — Slow Light, Main Gallery', '2024 — Temperatura, Galería Elba, Madrid', '2022 — Ochre Hours, Kunsthalle Mainz'], Collections: ['MALBA, Buenos Aires', 'Fundación Juan March, Madrid', 'Fondation Carmignac, Porquerolles'] },
+      social: { instagram: 'luciaferrer.studio', facebook: 'luciaferrerart', youtube: 'luciaferrer' }, links: [['Artist website', 'https://example.com/luciaferrer'], ['Interview — Frieze Magazine', 'https://example.com/frieze'], ['Studio visit film', 'https://example.com/film']], email: 'studio@luciaferrer.example' },
+    { id: 'tomas-ibarra', name: 'Tomás Ibarra', born: 'b. 1979, Montevideo', based: 'Lives and works in Mexico City', style: 'geo', medium: 'Acrylic on canvas', palette: ['#f2efe6', '#1f3a5f', '#e24a33', '#f2b134', '#111111'],
+      short: 'Hard-edge geometric compositions in dialogue with Latin American constructivism.',
+      bio: ['Tomás Ibarra builds paintings the way an architect builds a façade: with ruled edges, primary color and an exact sense of interval. His compositions extend the legacy of Torres-García and the Madí group into a contemporary language of signage and urban fragments.', 'Ibarra’s studio practice moves between canvases, wall paintings and site-specific murals. Each composition begins as a small paper collage before being scaled up with masking tape and flat acrylic.'],
+      cv: { Education: ['2004 — Escuela Nacional de Bellas Artes, Montevideo'], 'Solo exhibitions': ['2025 — Constructivo, Main Gallery', '2023 — Señales, Museo Tamayo (project room)', '2021 — Interval, Galeria Leme, São Paulo'], Collections: ['Museo Tamayo', 'Colección Patricia Phelps de Cisneros', 'Pérez Art Museum Miami'] },
+      social: { instagram: 'tomas.ibarra', facebook: 'tomasibarrastudio', x: 'tomasibarra' }, links: [['Mural archive', 'https://example.com/murals'], ['Catalogue raisonné (PDF)', 'https://example.com/cr']], email: 'hola@tomasibarra.example' },
+    { id: 'ana-kowalczyk', name: 'Ana Kowalczyk', born: 'b. 1990, Kraków', based: 'Lives and works in Berlin', style: 'lines', medium: 'Ink on paper', palette: ['#f6f3ec', '#1d1d1b', '#b23a2b'],
+      short: 'Meditative ink drawings composed of thousands of hand-drawn lines.',
+      bio: ['Ana Kowalczyk draws a single line, then another beside it, and another, for weeks at a time. The tiny tremors of her hand accumulate into waves, folds and interference patterns — a seismograph of attention.', 'A graduate of the Academy of Fine Arts in Kraków, Kowalczyk has been an artist in residence at Künstlerhaus Bethanien and the Cité internationale des arts.'],
+      cv: { Education: ['2015 — MFA, Academy of Fine Arts, Kraków'], 'Solo exhibitions': ['2026 — Interference, Main Gallery', '2024 — Line by Line, Kunstverein Leipzig'], Residencies: ['2023 — Künstlerhaus Bethanien, Berlin', '2021 — Cité internationale des arts, Paris'] },
+      social: { instagram: 'ana.kowalczyk.lines', youtube: 'anakowalczyk' }, links: [['Process video', 'https://example.com/process'], ['Bethanien residency page', 'https://example.com/bethanien']], email: 'ana@kowalczyk.example' },
+    { id: 'daniel-osei', name: 'Daniel Osei', born: 'b. 1986, Accra', based: 'Lives and works in London', style: 'organic', medium: 'Oil and pigment on canvas', palette: ['#20302b', '#d7a86e', '#6f9b8a', '#c8553d', '#f2e3c6'],
+      short: 'Biomorphic abstractions drawing on botany, textiles and memory.',
+      bio: ['Daniel Osei’s canvases teem with soft-edged forms that recall seed pods, cells and the patterns of kente cloth. Applied in thin washes of pigment and oil, the shapes float over deep green and umber grounds.', 'Osei studied at the Kwame Nkrumah University of Science and Technology in Kumasi and the Slade School of Fine Art. In 2025 he received the Jerwood Painting Fellowship.'],
+      cv: { Education: ['2014 — MFA, Slade School of Fine Art, London', '2009 — BFA, KNUST, Kumasi'], Awards: ['2025 — Jerwood Painting Fellowship'], 'Solo exhibitions': ['2025 — Seedbank, Main Gallery', '2023 — Green Rooms, Gasworks, London'] },
+      social: { instagram: 'danielosei.paint', x: 'danosei', facebook: 'danieloseiart' }, links: [['Jerwood Fellowship announcement', 'https://example.com/jerwood'], ['Podcast: The Studio', 'https://example.com/podcast']], email: 'studio@danielosei.example' },
+    { id: 'ines-marin', name: 'Inés Marín', born: 'b. 1975, Seville', based: 'Lives and works in Lisbon', style: 'horizon', medium: 'Oil on panel', palette: ['#f3c9a8', '#f6e7d2', '#e8613c', '#8a5a6b', '#4f3a5c', '#2b2340'],
+      short: 'Atmospheric landscapes of the Atlantic coast at dusk.',
+      bio: ['Inés Marín paints the hour after sunset along the Atlantic coast of Portugal and Andalusia. Reduced to layered silhouettes and gradients, her landscapes feel at once remembered and invented.', 'Marín has exhibited widely across Europe and Latin America, and in 2024 she completed a public commission for the Lisbon Metro.'],
+      cv: { Education: ['1999 — Facultad de Bellas Artes, Universidad de Sevilla'], 'Solo exhibitions': ['2026 — Atlantic, Main Gallery', '2024 — Hora Azul, MAAT (project space), Lisbon'], Commissions: ['2024 — Lisbon Metro, Alameda station'] },
+      social: { instagram: 'inesmarin.pintura', facebook: 'inesmarinart' }, links: [['Lisbon Metro commission', 'https://example.com/metro'], ['Artist website', 'https://example.com/inesmarin']], email: 'contacto@inesmarin.example' },
+    { id: 'kenji-arai', name: 'Kenji Arai', born: 'b. 1982, Osaka', based: 'Lives and works in New York', style: 'grid', medium: 'Gouache on board', palette: ['#efe9dd', '#2c4a7a', '#d9a441', '#c64b3b', '#3f6f5f', '#141414'],
+      short: 'Modular gouache paintings exploring pattern, repetition and chance.',
+      bio: ['Kenji Arai’s modular paintings start with a simple rule — a grid, a set of five colors, a roll of the dice — and let chance decide the rest. The results feel like quilts, city plans or musical scores.', 'Arai studied architecture at Kyoto Institute of Technology before turning to painting at the School of Visual Arts in New York.'],
+      cv: { Education: ['2010 — MFA, School of Visual Arts, New York', '2005 — B.Arch, Kyoto Institute of Technology'], 'Solo exhibitions': ['2026 — Rule & Chance, Main Gallery', '2023 — Modules, Japan Society, New York'] },
+      social: { instagram: 'kenji.arai.studio', x: 'kenjiarai', youtube: 'kenjiarai' }, links: [['Japan Society exhibition', 'https://example.com/japansociety'], ['Essay: Painting by rules', 'https://example.com/essay']], email: 'studio@kenjiarai.example' }
+  ];
+  const TITLES = { field: ['Slow Light I', 'Ochre Hour', 'Rust and Linen', 'Siesta', 'Pampa', 'Ember Field'], geo: ['Constructivo No. 4', 'Signal', 'Interval Blue', 'Façade', 'Red Arc', 'Plaza'], lines: ['Interference 12', 'Tide', 'Breath', 'Fold III', 'Tremor', 'Long Line'], organic: ['Seedbank', 'Green Room', 'Pod', 'Night Garden', 'Kumasi Morning', 'Germination'], horizon: ['Atlantic, 9 pm', 'Hora Azul', 'Cabo', 'After the Tide', 'Algarve Dusk', 'Last Ferry'], grid: ['Rule 5', 'Chance Quilt', 'Module 22', 'City Plan', 'Score for Five Colors', 'Dice Painting'] };
+  const SIZES = [[100, 120], [80, 100], [120, 150], [60, 80], [150, 120], [90, 90], [50, 70], [140, 180]];
+  A.works = [];
+  A.artists.forEach((a, ai) => { TITLES[a.style].forEach((t, i) => { const R = rng(a.id + i), sz = SIZES[(ai * 3 + i * 5) % SIZES.length], status = i === 2 ? 'sold' : (i === 4 ? 'request' : 'available');
+    A.works.push({ id: a.id.split('-')[0] + '-' + (i + 1), artist: a.id, title: t, year: 2020 + ((ai + i * 2) % 6), material: a.medium, w: sz[0], h: sz[1], price: Math.round((2800 + R() * 14000) / 100) * 100, status }); }); });
+  A.exhibitions = [
+    { id: 'slow-light', title: 'Slow Light', artists: ['lucia-ferrer'], start: '2026-09-18', end: '2026-11-14', venue: 'Main Gallery', virtual: true, kind: 'Solo exhibition',
+      text: ['Slow Light brings together twelve new paintings by Lucía Ferrer, made over two years in her Madrid studio. Each canvas holds dozens of glazes, so color seems to arrive gradually, the way light fills a room at dawn.', 'The exhibition is also available as an ArtPlacer Virtual Exhibition, so visitors can walk the gallery from anywhere and view each work at true scale.'] },
+    { id: 'rule-and-chance', title: 'Rule & Chance', artists: ['kenji-arai', 'tomas-ibarra'], start: '2026-11-26', end: '2027-01-30', venue: 'Main Gallery', virtual: false, kind: 'Two-person exhibition',
+      text: ['Kenji Arai and Tomás Ibarra share a love of systems: grids, rulers, intervals and dice. Rule & Chance pairs their work for the first time, tracing how strict constraints can open up surprisingly free paintings.'] },
+    { id: 'atlantic', title: 'Atlantic', artists: ['ines-marin'], start: '2026-05-08', end: '2026-07-11', venue: 'Project Room', virtual: true, kind: 'Solo exhibition',
+      text: ['Atlantic gathers new panels by Inés Marín painted along the coast between Cádiz and Cabo da Roca. Silhouettes of cliffs, ferries and lighthouses dissolve into gradients of apricot and violet.', 'Walk the exhibition virtually through ArtPlacer and see each panel to scale.'] },
+    { id: 'interference', title: 'Interference', artists: ['ana-kowalczyk'], start: '2026-02-12', end: '2026-04-04', venue: 'Main Gallery', virtual: false, kind: 'Solo exhibition',
+      text: ['Kowalczyk’s first solo exhibition with the gallery presents twenty large ink drawings, each made from thousands of parallel lines. Seen up close, the drawings register every hesitation of the hand; from a distance they ripple like water.'] },
+    { id: 'seedbank', title: 'Seedbank', artists: ['daniel-osei'], start: '2025-10-02', end: '2025-12-20', venue: 'Main Gallery', virtual: true, kind: 'Solo exhibition',
+      text: ['In Seedbank, Daniel Osei imagines painting as a kind of archive: each canvas preserves forms gathered from botanical drawings, family textiles and walks through Kew Gardens.'] },
+    { id: 'summer-group', title: 'Summer Hang', artists: ['lucia-ferrer', 'daniel-osei', 'ana-kowalczyk', 'ines-marin'], start: '2025-07-03', end: '2025-08-29', venue: 'Main Gallery', virtual: false, kind: 'Group exhibition',
+      text: ['Our annual summer exhibition brings together recent work by gallery artists, hung salon-style across the main space.'] }
+  ];
+  A.news = [
+    { id: 'virtual-slow-light', date: '2026-09-25', cat: 'Exhibition', title: 'Slow Light is now open — in the gallery and online', artists: ['lucia-ferrer'], ex: 'slow-light',
+      body: ['Lucía Ferrer’s Slow Light opened to a full house on September 18. For collectors who can’t visit in person, the full exhibition is also available as an ArtPlacer Virtual Exhibition.', 'Every work can be viewed at true scale and placed on your own wall with ArtPlacer’s AR viewer.'] },
+    { id: 'osei-jerwood', date: '2026-08-14', cat: 'Award', title: 'Daniel Osei on the Jerwood shortlist for public commission', artists: ['daniel-osei'],
+      body: ['Following his 2025 Jerwood Painting Fellowship, Daniel Osei has been shortlisted for a large-scale public commission for the new Kew Gardens visitor center. The winner will be announced in December.'] },
+    { id: 'fair-booth', date: '2026-07-30', cat: 'Art fair', title: 'Find us at Booth B12 this October', artists: ['tomas-ibarra', 'kenji-arai'],
+      body: ['We will present new work by Tomás Ibarra and Kenji Arai at this October’s international art fair. Previews are available on request, and every work can be viewed in your own room through ArtPlacer.'] },
+    { id: 'marin-metro', date: '2026-06-02', cat: 'Press', title: 'Inés Marín’s Atlantic reviewed in the press', artists: ['ines-marin'], ex: 'atlantic',
+      body: ['“Marín paints the minutes after sunset with a tenderness that borders on the devotional,” wrote one critic of Atlantic, praising the series as her most ambitious to date.'] },
+    { id: 'kowalczyk-book', date: '2026-04-20', cat: 'Publication', title: 'New monograph: Ana Kowalczyk — Line by Line', artists: ['ana-kowalczyk'],
+      body: ['Our first monograph on Ana Kowalczyk is out now, with an essay by the curator and more than 80 full-page reproductions. It is available on the Artworks page.'] },
+    { id: 'studio-ferrer', date: '2026-03-11', cat: 'Studio visit', title: 'In the studio with Lucía Ferrer', artists: ['lucia-ferrer'],
+      body: ['We visited Lucía Ferrer in her Madrid studio as she finished the last canvases for Slow Light. She talked about patience, linen and the light of the Pampas.'] }
+  ];
+  A.products = [];
+  A.works.filter(w => w.status === 'available').forEach(w => A.products.push({ id: 'art-' + w.id, kind: 'artwork', work: w.id, artist: w.artist, name: w.title, price: w.price }));
+  [{ id: 'book-kowalczyk', kind: 'book', artist: 'ana-kowalczyk', name: 'Ana Kowalczyk — Line by Line', cover: 'Line by Line', price: 45, spec: [['Format', 'Hardcover, 24 × 30 cm'], ['Pages', '176'], ['Year', '2026'], ['Language', 'English / German']] },
+    { id: 'book-ferrer', kind: 'book', artist: 'lucia-ferrer', name: 'Slow Light — Exhibition Catalogue', cover: 'Slow Light', price: 38, spec: [['Format', 'Softcover, 22 × 28 cm'], ['Pages', '96'], ['Year', '2026'], ['Language', 'English / Spanish']] },
+    { id: 'book-osei', kind: 'book', artist: 'daniel-osei', name: 'Daniel Osei — Seedbank', cover: 'Seedbank', price: 42, spec: [['Format', 'Hardcover, 23 × 29 cm'], ['Pages', '128'], ['Year', '2025'], ['Language', 'English']] },
+    { id: 'ed-marin', kind: 'edition', artist: 'ines-marin', work: 'ines-2', name: 'Hora Azul — Giclée edition', edition: 'Edition of 50, signed and numbered', price: 650, spec: [['Technique', 'Archival pigment print'], ['Size', '50 × 70 cm'], ['Edition', '50 + 5 AP'], ['Year', '2026']] },
+    { id: 'ed-arai', kind: 'edition', artist: 'kenji-arai', work: 'kenji-2', name: 'Chance Quilt — Screenprint', edition: 'Edition of 30, signed', price: 480, spec: [['Technique', '6-color screenprint'], ['Size', '60 × 60 cm'], ['Edition', '30'], ['Year', '2025']] },
+    { id: 'obj-vase', kind: 'object', artist: 'daniel-osei', shape: 'vase', name: 'Seed Vessel — Ceramic', price: 220, spec: [['Material', 'Glazed stoneware'], ['Height', '28 cm'], ['Edition', 'Hand-thrown, unique variations']] },
+    { id: 'obj-tote', kind: 'object', shape: 'tote', print: 'Main Gallery', name: 'Gallery Tote Bag', price: 30, spec: [['Material', 'Organic cotton canvas'], ['Size', '38 × 42 cm']] }
+  ].forEach(p => A.products.push(p));
+  A.gallery = { address: ['214 Calle del Arte', 'Madrid 28012, Spain'], hours: 'Tue–Sat, 11am–7pm', phone: '+34 910 000 000', email: 'info@gallery.example', social: { instagram: 'gallery', facebook: 'gallery', youtube: 'gallery' } };
+
+  function artistById(id) { return A.artists.find(a => a.id === id); }
+  const workById = id => A.works.find(w => w.id === id), exById = id => A.exhibitions.find(e => e.id === id), newsById = id => A.news.find(n => n.id === id), productById = id => A.products.find(p => p.id === id);
+  const worksBy = id => A.works.filter(w => w.artist === id), exBy = id => A.exhibitions.filter(e => e.artists.includes(id)), newsBy = id => A.news.filter(n => n.artists.includes(id));
+  function exStatus(e) { if (d(e.end) < TODAY) return 'past'; if (d(e.start) > TODAY) return 'upcoming'; return 'current'; }
+  const exStatusLabel = e => ({ past: 'Past', current: 'Current', upcoming: 'Upcoming' })[exStatus(e)];
+  const exWorks = e => { const per = e.artists.length > 1 ? 3 : 6, lists = e.artists.map(id => worksBy(id).slice(0, per)), out = []; for (let i = 0; i < per; i++) lists.forEach(l => l[i] && out.push(l[i])); return out; };
+  const exImages = (e, dark) => [0, 1, 2, 3].map(i => { const w = exWorks(e); return roomURI(e.id + i, w.slice((i * 2) % w.length).concat(w).slice(0, 3), dark); });
+  const productImage = p => p.kind === 'artwork' ? artURI(workById(p.work)) : productURI(p);
+  const productHref = p => p.kind === 'artwork' ? `#/artists/${p.artist}/works/${p.work}` : `#/artworks/${p.id}`;
+  const statusLabel = w => w.status === 'sold' ? 'Sold' : (w.status === 'request' ? 'Price on request' : money(w.price));
+  const sizeLabel = w => `${w.w} × ${w.h} cm`, sizeIn = w => `${(w.w / 2.54).toFixed(1)} × ${(w.h / 2.54).toFixed(1)} in`;
+
+  /* ---------- ArtPlacer embeds (code supplied by ArtPlacer) ---------- */
+  /* ArtPlacer Sample Room widget — button code supplied by ArtPlacer (inserted per artwork page via ArtPlacer.insert).
+     "after" is the only addition: it tells ArtPlacer where to place its button (inside the artwork's widget block) instead of a floating corner button. */
+  const AP_SAMPLE_ROOM = {
+    gallery: "1",
+    default_style: "true",
+    button_width: "auto",
+    resizable: "false",
+    frames: "true",
+    rotate: "false",
+    dimensions_standard: "wxh",
+    default_wall_dimension: "height",
+    unit: "in",
+    catalog: "false",
+    data_capture_form: "false",
+    type: "2",
+    space: "73591",
+    additional_spaces: "73591,73863,295986",
+    artwork: "701308",
+  };
+  const AP_VIRTUAL = '<iframe width="100%" height="450" src="https://d7mntklkfre1v.cloudfront.net/virtual-exhibitions/?i=22084" frameborder="0" allowfullscreen></iframe>';
+  /* Three ArtPlacer buttons per artwork. Swap any popup image by setting POPUP_IMAGES.ar / .sample / .room to an image URL. */
+  const POPUP_IMAGES = { ar: 'img/popup-ar.jpg', room: 'img/popup-room.jpg' };
+  const AR_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V4a1 1 0 0 1 1-1h3M17 3h3a1 1 0 0 1 1 1v3M21 17v3a1 1 0 0 1-1 1h-3M7 21H4a1 1 0 0 1-1-1v-3"/><path d="M12 6.5l4.5 2.5v5L12 16.5 7.5 14V9z"/><path d="M7.5 9L12 11.5 16.5 9M12 11.5v5"/></svg>';
+  function widgetArtwork(w) { if (!w) return '';
+    return `<div class="ap-slot" data-ap="artwork"><div class="apb-grid"><button class="apb" data-apm="ar" data-wid="${w.id}"><span class="apb-ico">${AR_ICON}</span>View in AR</button><button class="apb" data-apm="sample" data-wid="${w.id}">View in sample room</button><button class="apb" data-apm="room" data-wid="${w.id}">Try in your room</button></div><span class="ap-anchor"></span></div>`; }
+  function phoneURI(w) { const k = 'ph:' + w.id; if (cache.has(k)) return cache.get(k); const W = 420, H = 820, r = w.h / w.w, aw = 170, ah = aw * r;
+    const s = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${W} ${H}"><defs><clipPath id="sc"><rect x="22" y="22" width="${W - 44}" height="${H - 44}" rx="42"/></clipPath><filter id="sh"><feDropShadow dx="0" dy="6" stdDeviation="7" flood-opacity=".3"/></filter></defs><rect width="${W}" height="${H}" rx="58" fill="#161616"/><g clip-path="url(#sc)"><rect x="0" y="0" width="${W}" height="${H}" fill="#e9e6e0"/><rect x="0" y="${H * .72}" width="${W}" height="${H * .28}" fill="#c4b39b"/><polygon points="0,${H * .72} ${W},${H * .72} ${W},${H * .74} 0,${H * .74}" fill="#d8d3ca"/><image filter="url(#sh)" x="${(W - aw) / 2}" y="${H * .38 - ah / 2}" width="${aw}" height="${ah}" preserveAspectRatio="none" href="${artURI(w)}" xlink:href="${artURI(w)}"/><g stroke="#fff" stroke-width="3" fill="none" opacity=".9"><path d="M${(W - aw) / 2 - 14},${H * .38 - ah / 2 + 10}v-10h10M${(W + aw) / 2 + 14},${H * .38 - ah / 2 + 10}v-10h-10M${(W - aw) / 2 - 14},${H * .38 + ah / 2 - 10}v10h10M${(W + aw) / 2 + 14},${H * .38 + ah / 2 - 10}v10h-10"/></g><rect x="${W / 2 - 92}" y="${H - 120}" width="184" height="40" rx="20" fill="#000" opacity=".55"/><text x="${W / 2}" y="${H - 94}" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="15" fill="#fff">${w.w} × ${w.h} cm · true size</text></g><rect x="${W / 2 - 50}" y="34" width="100" height="26" rx="13" fill="#161616"/></svg>`;
+    cache.set(k, uri(s)); return cache.get(k); }
+  function apModal(mode, w) {
+    const a = artistById(w.artist), t = { ar: 'View in AR', sample: 'View in sample room', room: 'Try in your room' }[mode];
+    let body;
+    if (POPUP_IMAGES[mode]) body = `<div class="apm-imgwrap"><img class="apm-img apm-img--${mode}" src="${POPUP_IMAGES[mode]}" alt="${t}"></div>`;
+    else if (mode === 'ar') body = `<div class="apm-ar"><img class="apm-phone" src="${POPUP_IMAGES.ar || phoneURI(w)}" alt="Artwork shown on a wall through a phone camera"><div><h4>See it on your wall, at true size</h4><ol><li>Open this page on your phone or tablet.</li><li>Point the camera at an empty wall.</li><li>Tap to place <i>${esc(w.title)}</i> at ${w.w} × ${w.h} cm.</li></ol></div></div>`;
+    else if (mode === 'sample') { const rooms = [0, 1, 2, 3].map(i => roomURI(w.id + 'sr' + i, [w], i === 3));
+      body = `<div class="apm-sr"><img class="apm-main" src="${POPUP_IMAGES.sample || rooms[0]}" alt="Artwork in a sample room"><div class="apm-thumbs">${(POPUP_IMAGES.sample ? [POPUP_IMAGES.sample] : rooms).map((r, i) => `<button data-srimg="${i}" class="${i ? '' : 'on'}"><img src="${r}" alt="Room ${i + 1}"></button>`).join('')}</div></div>`; }
+    else body = POPUP_IMAGES.room ? `<img class="apm-main" src="${POPUP_IMAGES.room}" alt="Artwork in a client's room">` : `<div class="apm-yr"><label class="apm-drop"><input type="file" accept="image/*" hidden><b>Upload a photo of your wall</b><span>JPG or PNG · the artwork is placed at ${w.w} × ${w.h} cm</span></label><div class="apm-stage" hidden><img class="apm-bg" alt="Your room"><img class="apm-art" src="${artURI(w)}" alt="${esc(w.title)}" draggable="false"></div><div class="apm-ctl" hidden><label>Size <input type="range" min="10" max="70" value="28"></label><span>Drag the artwork to position it</span></div></div>`;
+    const m = document.createElement('div'); m.className = 'apm'; m.dataset.mode = mode;
+    m.innerHTML = `<div class="apm-box" role="dialog" aria-modal="true" aria-label="${t}"><div class="apm-hd"><div><b>${t}</b><span>${esc(a.name)}, <i>${esc(w.title)}</i>, ${w.year} · ${w.w} × ${w.h} cm</span></div><button class="apm-x" aria-label="Close">${ICON.close}</button></div>${body}<div class="apm-ft">Powered by ArtPlacer</div></div>`;
+    document.body.appendChild(m); document.body.classList.add('apm-open');
+    const close = () => { m.remove(); document.body.classList.remove('apm-open'); document.removeEventListener('keydown', esc_); };
+    const esc_ = ev => { if (ev.key === 'Escape') close(); }; document.addEventListener('keydown', esc_);
+    m.addEventListener('click', ev => { if (ev.target === m || ev.target.closest('.apm-x')) close();
+      const th = ev.target.closest('[data-srimg]'); if (th) { m.querySelector('.apm-main').src = th.querySelector('img').src; m.querySelectorAll('[data-srimg]').forEach(b => b.classList.toggle('on', b === th)); } });
+    const f = m.querySelector('input[type=file]'); if (f) { const stage = m.querySelector('.apm-stage'), art = m.querySelector('.apm-art'), rng_ = m.querySelector('input[type=range]');
+      f.onchange = () => { const file = f.files[0]; if (!file) return; const rd = new FileReader(); rd.onload = () => { m.querySelector('.apm-bg').src = rd.result; stage.hidden = false; m.querySelector('.apm-ctl').hidden = false; m.querySelector('.apm-drop').hidden = true; }; rd.readAsDataURL(file); };
+      const size = () => art.style.width = rng_.value + '%'; rng_.oninput = size; size(); art.style.left = '50%'; art.style.top = '40%';
+      art.onpointerdown = ev => { ev.preventDefault(); art.setPointerCapture(ev.pointerId); const r = stage.getBoundingClientRect();
+        art.onpointermove = mv => { art.style.left = Math.max(0, Math.min(100, (mv.clientX - r.left) / r.width * 100)) + '%'; art.style.top = Math.max(0, Math.min(100, (mv.clientY - r.top) / r.height * 100)) + '%'; };
+        art.onpointerup = () => { art.onpointermove = null; }; }; }
+    m.querySelector('.apm-x').focus();
+  }
+  document.addEventListener('click', ev => { const b = ev.target.closest('[data-apm]'); if (!b) return; ev.preventDefault(); const w = workById(b.dataset.wid);
+    if (b.dataset.apm === 'sample') { const live = b.closest('.ap-slot').querySelector('.artplacer-button'); if (live) live.click(); else toast('Sample room loads from ArtPlacer'); return; }
+    apModal(b.dataset.apm, w); });
+  function widgetVirtual() { return `<div class="ap-slot ap-slot--ve" data-ap="virtual"><div class="ap-ve">${AP_VIRTUAL}</div></div>`; }
+  function apRefresh() {
+    if (!window.ArtPlacer) return;
+    try { window.ArtPlacer.reset(); } catch (e) { /* ignore */ }
+    if (document.querySelector('.ap-slot .ap-anchor')) window.ArtPlacer.insert(Object.assign({}, AP_SAMPLE_ROOM, { after: '.ap-slot .ap-anchor' }));
+  }
+
+  /* ---------- cart (in-memory) ---------- */
+  const cart = { items: {}, add(id) { this.items[id] = (this.items[id] || 0) + 1; sync(); toast('Added to cart'); }, set(id, q) { if (q <= 0) delete this.items[id]; else this.items[id] = q; sync(); },
+    list() { return Object.entries(this.items).map(([id, q]) => ({ p: productById(id), q })); }, count() { return Object.values(this.items).reduce((a, b) => a + b, 0); }, total() { return this.list().reduce((s, x) => s + x.p.price * x.q, 0); } };
+  function counts() { document.querySelectorAll('[data-cart-count]').forEach(el => { el.textContent = cart.count(); el.classList.toggle('is-empty', !cart.count()); }); }
+  function sync() { counts(); if (route().name === 'cart') render(); }
+  function toast(msg) { let t = document.getElementById('ap-toast'); if (!t) { t = document.createElement('div'); t.id = 'ap-toast'; document.body.appendChild(t); } t.textContent = msg; t.classList.add('on'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('on'), 1800); }
+
+  /* ---------- shared icons ---------- */
+  const ICON = {
+    instagram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>',
+    facebook: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2.3H8v3h2.5V21h3z"/></svg>',
+    x: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.3-8.3L2 3h6.4l4.4 5.8L17.8 3zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5z"/></svg>',
+    youtube: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8zM10 15V9l5.2 3L10 15z"/></svg>',
+    arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+    ext: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"/></svg>',
+    bag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 8h14l-1 13H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>',
+    menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>',
+    close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 5l14 14M19 5L5 19"/></svg>',
+    cube: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l9 5v10l-9 5-9-5V7l9-5z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg>'
+  };
+  const SOCIAL_NAME = { instagram: 'Instagram', facebook: 'Facebook', x: 'X', youtube: 'YouTube' };
+  const SOCIAL_URL = { instagram: h => 'https://instagram.com/' + h, facebook: h => 'https://facebook.com/' + h, x: h => 'https://x.com/' + h, youtube: h => 'https://youtube.com/@' + h };
+  const socialList = obj => Object.entries(obj).map(([k, h]) => ({ key: k, name: SOCIAL_NAME[k], handle: '@' + h, url: SOCIAL_URL[k](h), icon: ICON[k] }));
+
+  /* ---------- artist sub-navigation ---------- */
+  const ARTIST_TABS = [['overview', 'Overview', ''], ['bio', 'Biography', '/bio'], ['works', 'Artworks', '/works'], ['exhibitions', 'Exhibitions', '/exhibitions'], ['news', 'News', '/news'], ['links', 'Social & Links', '/links'], ['contact', 'Contact', '/contact']];
+  const artistTabs = (a, active) => ARTIST_TABS.map(([k, label, p]) => ({ key: k, label, href: `#/artists/${a.id}${p}`, active: k === active }));
+
+  /* ---------- router ---------- */
+  const ROUTES = [
+    [/^$/, 'home'], [/^artists$/, 'artists'], [/^artists\/([\w-]+)$/, 'artist', ['id']], [/^artists\/([\w-]+)\/bio$/, 'bio', ['id']], [/^artists\/([\w-]+)\/works$/, 'works', ['id']],
+    [/^artists\/([\w-]+)\/works\/([\w-]+)$/, 'work', ['id', 'wid']], [/^artists\/([\w-]+)\/exhibitions$/, 'artistExhibitions', ['id']], [/^artists\/([\w-]+)\/exhibitions\/([\w-]+)$/, 'exhibition', ['id', 'eid']],
+    [/^artists\/([\w-]+)\/news$/, 'artistNews', ['id']], [/^artists\/([\w-]+)\/news\/([\w-]+)$/, 'newsItem', ['id', 'nid']], [/^artists\/([\w-]+)\/links$/, 'links', ['id']], [/^artists\/([\w-]+)\/contact$/, 'artistContact', ['id']],
+    [/^exhibitions$/, 'exhibitions'], [/^exhibitions\/([\w-]+)$/, 'exhibition', ['eid']], [/^news$/, 'news'], [/^news\/([\w-]+)$/, 'newsItem', ['nid']],
+    [/^artworks$/, 'shop'], [/^artworks\/([\w-]+)$/, 'product', ['pid']], [/^cart$/, 'cart'], [/^contact$/, 'contact']
+  ];
+  function route() { const path = (location.hash || '#/').replace(/^#\/?/, '').split('?')[0].replace(/\/$/, '');
+    for (const [re, name, keys] of ROUTES) { const m = path.match(re); if (m) { const params = {}; (keys || []).forEach((k, i) => params[k] = m[i + 1]); return { name, params, path }; } } return { name: 'notFound', params: {}, path }; }
+  const query = () => new URLSearchParams((location.hash.split('?')[1]) || '');
+
+  /* resolve params to objects so views stay simple */
+  function ctx(r) { const p = r.params, c = { route: r, q: query() };
+    if (p.id) c.artist = artistById(p.id); if (p.wid) c.work = workById(p.wid); if (p.eid) c.ex = exById(p.eid); if (p.nid) c.item = newsById(p.nid); if (p.pid) c.product = productById(p.pid);
+    if ((p.id && !c.artist) || (p.wid && !c.work) || (p.eid && !c.ex) || (p.nid && !c.item) || (p.pid && !c.product)) r.name = 'notFound';
+    return c; }
+
+  let T = null;
+  function render() { const r = route(), c = ctx(r), view = T.views[r.name] || T.views.notFound; const out = view(c);
+    document.getElementById('app').innerHTML = T.layout(out.html !== undefined ? out.html : out, r, c);
+    document.title = (out.title ? out.title + ' — ' : '') + T.siteName;
+    document.body.dataset.route = r.name; counts(); window.scrollTo(0, 0); apRefresh(); T.after && T.after(r, c); }
+
+  document.addEventListener('click', e => {
+    const add = e.target.closest('[data-add]'); if (add) { e.preventDefault(); cart.add(add.dataset.add); return; }
+    const inc = e.target.closest('[data-qty]'); if (inc) { e.preventDefault(); const id = inc.dataset.id; cart.set(id, (cart.items[id] || 0) + Number(inc.dataset.qty)); return; }
+    const tg = e.target.closest('[data-toggle]'); if (tg) { e.preventDefault(); document.body.classList.toggle(tg.dataset.toggle); return; }
+    const a = e.target.closest('a[href^="#/"]'); if (a) document.body.classList.remove('menu-open');
+  });
+  document.addEventListener('submit', e => { const f = e.target.closest('form[data-demo]'); if (!f) return; e.preventDefault(); f.innerHTML = `<p class="form-thanks">${esc(f.dataset.demo)}</p>`; });
+
+  window.APT = { A, esc, fmtDate, fmtRange, money, artURI, portraitURI, roomURI, productImage, productHref, artistById, workById, exById, newsById, productById, worksBy, exBy, newsBy, exStatus, exStatusLabel, exWorks, exImages, statusLabel, sizeLabel, sizeIn, widgetArtwork, widgetVirtual, cart, ICON, socialList, artistTabs, d, TODAY, MON, MONTHS,
+    start(theme) { T = theme; window.addEventListener('hashchange', render); render(); } };
+})();
+</script><script>/* Theme 2 — NOCTURNE: dark, cinematic, full-bleed */
+(function () {
+  const $ = APT, A = $.A, e = $.esc;
+  const NAV = [['artists', 'Artists'], ['exhibitions', 'Exhibitions'], ['news', 'News'], ['artworks', 'Artworks'], ['contact', 'Contact']];
+  const workHref = w => `#/artists/${w.artist}/works/${w.id}`;
+  const exHref = (x, a) => a ? `#/artists/${a.id}/exhibitions/${x.id}` : `#/exhibitions/${x.id}`;
+  const newsHref = (n, a) => a ? `#/artists/${a.id}/news/${n.id}` : `#/news/${n.id}`;
+  const names = ids => ids.map(id => $.artistById(id).name).join(' & ');
+  const img = (x, i) => $.exImages(x, true)[i || 0];
+  const arrow = `<span class="ico">${$.ICON.arrow}</span>`;
+
+  const tile = w => `<a class="tile" href="${workHref(w)}"><div class="tile-img"><img src="${$.artURI(w)}" alt="${e(w.title)}"></div><div class="tile-cap"><span>${e(w.title)}, ${w.year}</span><span class="dim">${$.statusLabel(w)}</span></div></a>`;
+  const exRow = (x, a) => `<a class="exrow" href="${exHref(x, a)}"><div class="exrow-img"><img src="${img(x)}" alt=""></div><div class="exrow-txt"><span class="tag">${$.exStatusLabel(x)}${x.virtual ? ' · Virtual' : ''}</span><h3>${e(x.title)}</h3><p>${e(names(x.artists))}</p><p class="dim">${$.fmtRange(x.start, x.end)} — ${e(x.venue)}</p>${arrow}</div></a>`;
+  const newsCard = (n, a) => `<a class="nc" href="${newsHref(n, a)}"><div class="nc-img"><img src="${n.ex ? img($.exById(n.ex), 2) : $.artURI($.worksBy(n.artists[0])[1])}" alt=""></div><span class="tag">${e(n.cat)} · ${$.fmtDate(n.date, 1)}</span><h3>${e(n.title)}</h3></a>`;
+  const prodCard = p => `<div class="pc"><a class="pc-img" href="${$.productHref(p)}"><img src="${$.productImage(p)}" alt="${e(p.name)}"></a><div class="pc-info"><div><span class="dim">${e(p.artist ? $.artistById(p.artist).name : 'Halden Editions')}</span><a href="${$.productHref(p)}">${e(p.name)}</a></div><div class="pc-buy"><span>${$.money(p.price)}</span><button data-add="${p.id}" aria-label="Add ${e(p.name)} to cart">+ Add</button></div></div></div>`;
+  const pageHead = (t, sub) => `<header class="phd"><h1>${t}</h1>${sub ? `<p class="dim">${sub}</p>` : ''}</header>`;
+  const filters = (base, key, cur, opts) => `<nav class="chips">${opts.map(([k, l]) => `<a href="#/${base}?${key}=${k}" class="${cur === k ? 'on' : ''}">${l}</a>`).join('')}</nav>`;
+
+  function artistShell(a, key, inner, hero) {
+    const w = $.worksBy(a.id)[hero || 0];
+    return `<section class="ahero"><img src="${$.artURI(w)}" alt=""><div class="ahero-in"><a class="dim" href="#/artists">Artists</a><h1>${e(a.name)}</h1><p class="dim">${e(a.born)} · ${e(a.based)}</p></div></section>
+      <nav class="subnav">${$.artistTabs(a, key).map(t => `<a href="${t.href}" class="${t.active ? 'on' : ''}">${t.label}</a>`).join('')}</nav><div class="wrap">${inner}</div>`;
+  }
+  const contactForm = subject => `<form class="form" data-demo="Thank you. A member of the team will reply within 24 hours."><div class="row"><label>Name<input required></label><label>Email<input type="email" required></label></div><label>Subject<input value="${e(subject || '')}"></label><label>Message<textarea rows="5"></textarea></label><button class="btn">Send message ${arrow}</button></form>`;
+
+  const views = {
+    home() {
+      const slides = A.exhibitions.filter(x => $.exStatus(x) !== 'past').concat([A.exhibitions.find(x => x.id === 'atlantic')]);
+      return { title: '', html: `<section class="slides">${slides.map((x, i) => `<a href="#/exhibitions/${x.id}" class="slide ${i ? '' : 'on'}"><img src="${img(x, i)}" alt=""><div class="slide-txt"><span class="tag">${$.exStatusLabel(x)} exhibition</span><h2>${e(x.title)}</h2><p>${e(names(x.artists))} — ${$.fmtRange(x.start, x.end)}</p></div></a>`).join('')}
+          <div class="dots">${slides.map((_, i) => `<button data-slide="${i}" class="${i ? '' : 'on'}" aria-label="Slide ${i + 1}"></button>`).join('')}</div></section>
+        <section class="wrap"><div class="sh"><h2>Artists</h2><a href="#/artists">All artists ${arrow}</a></div>
+          <div class="names">${A.artists.map(a => `<a href="#/artists/${a.id}"><span>${e(a.name)}</span><img src="${$.artURI($.worksBy(a.id)[0])}" alt=""></a>`).join('')}</div></section>
+        <section class="wrap"><div class="sh"><h2>Exhibitions</h2><a href="#/exhibitions">All exhibitions ${arrow}</a></div>${A.exhibitions.slice(0, 3).map(x => exRow(x)).join('')}</section>
+        <section class="ve-band"><img src="${img($.exById('slow-light'), 3)}" alt=""><div><span class="tag">ArtPlacer Virtual Exhibition</span><h2>Visit the gallery from anywhere</h2><p class="dim">Walk Slow Light in 3D and see every work at true scale.</p><a class="btn" href="#/exhibitions/slow-light">Enter the exhibition ${arrow}</a></div></section>
+        <section class="wrap"><div class="sh"><h2>Latest</h2><a href="#/news">All news ${arrow}</a></div><div class="g3">${A.news.slice(0, 3).map(n => newsCard(n)).join('')}</div></section>` };
+    },
+    artists() {
+      return { title: 'Artists', html: pageHead('Artists') + `<div class="wrap"><div class="ag">${A.artists.map(a => `<a class="ac" href="#/artists/${a.id}"><img src="${$.artURI($.worksBy(a.id)[1])}" alt=""><div><h3>${e(a.name)}</h3><p class="dim">${e(a.short)}</p></div></a>`).join('')}</div></div>` };
+    },
+    artist({ artist: a }) {
+      const ws = $.worksBy(a.id), ns = $.newsBy(a.id);
+      return { title: a.name, html: artistShell(a, 'overview', `<div class="intro"><p class="lead">${e(a.short)}</p><div><p>${e(a.bio[0])}</p><a class="lnk" href="#/artists/${a.id}/bio">Full biography ${arrow}</a></div></div>
+        <div class="sh"><h2>Selected works</h2><a href="#/artists/${a.id}/works">All works ${arrow}</a></div><div class="tiles">${ws.slice(0, 6).map(tile).join('')}</div>
+        <div class="sh"><h2>Exhibitions</h2></div>${$.exBy(a.id).map(x => exRow(x, a)).join('')}
+        ${ns.length ? `<div class="sh"><h2>News</h2></div><div class="g3">${ns.map(n => newsCard(n, a)).join('')}</div>` : ''}
+        <div class="sh"><h2>Follow</h2></div><div class="socrow">${$.socialList(a.social).map(s => `<a href="${s.url}" target="_blank" rel="noopener"><span class="ico">${s.icon}</span>${s.name}</a>`).join('')}</div>`) };
+    },
+    bio({ artist: a }) {
+      return { title: a.name + ' — Biography', html: artistShell(a, 'bio', `<div class="bio"><div><img src="${$.portraitURI(a)}" alt="Portrait of ${e(a.name)}"></div><div><div class="prose">${a.bio.map(p => `<p>${e(p)}</p>`).join('')}</div>
+        <div class="cv">${Object.entries(a.cv).map(([k, v]) => `<div><h4>${e(k)}</h4>${v.map(x => `<p>${e(x)}</p>`).join('')}</div>`).join('')}</div></div></div>`, 1) };
+    },
+    works({ artist: a }) { return { title: a.name + ' — Artworks', html: artistShell(a, 'works', `<div class="tiles">${$.worksBy(a.id).map(tile).join('')}</div>`, 2) }; },
+    work({ artist: a, work: w }) {
+      const ws = $.worksBy(a.id), i = ws.indexOf(w), prev = ws[(i - 1 + ws.length) % ws.length], next = ws[(i + 1) % ws.length], p = A.products.find(x => x.work === w.id);
+      return { title: w.title, html: `<section class="stage"><a class="nav-l" href="${workHref(prev)}" aria-label="Previous">‹</a><img src="${$.artURI(w)}" alt="${e(w.title)}"><a class="nav-r" href="${workHref(next)}" aria-label="Next">›</a></section>
+        <section class="wrap wd"><div class="wd-t"><a class="dim" href="#/artists/${a.id}/works">${e(a.name)}</a><h1>${e(w.title)}</h1></div>
+          <dl class="specs"><div><dt>Year</dt><dd>${w.year}</dd></div><div><dt>Material</dt><dd>${e(w.material)}</dd></div><div><dt>Size</dt><dd>${$.sizeLabel(w)}<br><span class="dim">${$.sizeIn(w)}</span></dd></div><div><dt>Price</dt><dd>${$.statusLabel(w)}</dd></div></dl>
+          <div class="wd-act"><div class="btns">${p ? `<button class="btn" data-add="${p.id}">Add to cart</button>` : ''}<a class="btn btn-g" href="#/artists/${a.id}/contact?work=${w.id}">Enquire</a></div>
+            <div class="apbox"><span class="tag">View in your space</span><p class="dim">Try this work in augmented reality, in a photo of your own room, or in our sample rooms.</p>${$.widgetArtwork(w)}</div></div></section>
+        <section class="wrap"><div class="sh"><h2>More by ${e(a.name)}</h2></div><div class="tiles">${ws.filter(x => x !== w).slice(0, 3).map(tile).join('')}</div></section>` };
+    },
+    artistExhibitions({ artist: a }) { return { title: a.name + ' — Exhibitions', html: artistShell(a, 'exhibitions', $.exBy(a.id).map(x => exRow(x, a)).join(''), 3) }; },
+    exhibition({ ex: x, artist: a }) {
+      const ims = $.exImages(x, true);
+      return { title: x.title, html: `<section class="xhero"><img src="${ims[0]}" alt=""><div class="xhero-in"><a class="dim" href="${a ? `#/artists/${a.id}/exhibitions` : '#/exhibitions'}">${a ? e(a.name) + ' — ' : ''}Exhibitions</a><span class="tag">${e(x.kind)} · ${$.exStatusLabel(x)}</span><h1>${e(x.title)}</h1><p>${e(names(x.artists))}</p><p class="dim">${$.fmtRange(x.start, x.end)} — ${e(x.venue)}</p></div></section>
+        <section class="wrap intro"><p class="lead">${e(x.text[0])}</p><div class="prose">${x.text.slice(1).map(p => `<p>${e(p)}</p>`).join('')}<p class="dim">Opening: ${$.fmtDate(x.start)} · Closing: ${$.fmtDate(x.end)}</p></div></section>
+        ${x.virtual ? `<section class="vex"><div class="wrap"><div class="sh"><h2>Virtual Exhibition</h2><span class="dim">Powered by ArtPlacer</span></div><div class="vex-box">${$.widgetVirtual()}</div></div></section>` : ''}
+        <section class="wrap"><div class="sh"><h2>Installation views</h2></div><div class="mosaic">${ims.slice(1).map(i => `<img src="${i}" alt="">`).join('')}</div></section>
+        <section class="wrap"><div class="sh"><h2>Works</h2></div><div class="tiles">${$.exWorks(x).map(tile).join('')}</div></section>` };
+    },
+    artistNews({ artist: a }) { const ns = $.newsBy(a.id); return { title: a.name + ' — News', html: artistShell(a, 'news', ns.length ? `<div class="g3">${ns.map(n => newsCard(n, a)).join('')}</div>` : '<p class="dim">No news yet.</p>', 4) }; },
+    newsItem({ item: n, artist: a }) {
+      return { title: n.title, html: `<article class="art"><a class="dim" href="${a ? `#/artists/${a.id}/news` : '#/news'}">${a ? e(a.name) + ' — ' : ''}News</a><span class="tag">${e(n.cat)} · ${$.fmtDate(n.date)}</span><h1>${e(n.title)}</h1>
+        <img src="${n.ex ? img($.exById(n.ex), 1) : $.artURI($.worksBy(n.artists[0])[0])}" alt=""><div class="prose">${n.body.map(p => `<p>${e(p)}</p>`).join('')}</div>
+        <div class="rel">${n.artists.map(id => `<a class="btn btn-g" href="#/artists/${id}">${e($.artistById(id).name)} ${arrow}</a>`).join('')}${n.ex ? `<a class="btn btn-g" href="#/exhibitions/${n.ex}">${e($.exById(n.ex).title)} ${arrow}</a>` : ''}</div></article>` };
+    },
+    links({ artist: a }) {
+      return { title: a.name + ' — Social & Links', html: artistShell(a, 'links', `<div class="sh"><h2>Social media</h2></div><div class="socgrid">${$.socialList(a.social).map(s => `<a href="${s.url}" target="_blank" rel="noopener"><span class="ico">${s.icon}</span><b>${s.name}</b><span class="dim">${s.handle}</span></a>`).join('')}</div>
+        <div class="sh"><h2>External links</h2></div>${a.links.map(([t, u]) => `<a class="xl" href="${u}" target="_blank" rel="noopener"><span>${e(t)}</span><span class="dim">${e(u.replace('https://', ''))}</span><span class="ico">${$.ICON.ext}</span></a>`).join('')}`, 5) };
+    },
+    artistContact({ artist: a, q }) {
+      const w = q.get('work') && $.workById(q.get('work'));
+      return { title: 'Contact — ' + a.name, html: artistShell(a, 'contact', `<div class="ct2"><div>${w ? `<div class="enq"><img src="${$.artURI(w)}" alt=""><div><b>${e(w.title)}</b>, ${w.year}<br><span class="dim">${$.sizeLabel(w)} · ${$.statusLabel(w)}</span></div></div>` : ''}
+        <h4 class="tag">Representation</h4><p>Halden Gallery<br>${A.gallery.address.join('<br>')}<br><a href="mailto:${A.gallery.email}">${A.gallery.email}</a></p><h4 class="tag">Studio</h4><p><a href="mailto:${a.email}">${a.email}</a></p></div>${contactForm('Enquiry — ' + a.name + (w ? ', ' + w.title : ''))}</div>`) };
+    },
+    exhibitions({ q }) {
+      const s = q.get('s') || 'all', list = A.exhibitions.filter(x => s === 'all' || $.exStatus(x) === s);
+      return { title: 'Exhibitions', html: pageHead('Exhibitions') + `<div class="wrap">${filters('exhibitions', 's', s, [['all', 'All'], ['current', 'Current'], ['upcoming', 'Upcoming'], ['past', 'Past']])}${list.map(x => exRow(x)).join('') || '<p class="dim">Nothing here yet.</p>'}</div>` };
+    },
+    news() { return { title: 'News', html: pageHead('News') + `<div class="wrap"><div class="g3">${A.news.map(n => newsCard(n)).join('')}</div></div>` }; },
+    shop({ q }) {
+      const k = q.get('k') || 'all', list = A.products.filter(p => k === 'all' || p.kind === k);
+      return { title: 'Artworks', html: pageHead('Artworks', 'Original works, editions, books and objects — shipped worldwide.') + `<div class="wrap">${filters('artworks', 'k', k, [['all', 'All'], ['artwork', 'Originals'], ['edition', 'Editions'], ['book', 'Books'], ['object', 'Objects']])}<div class="pg">${list.map(prodCard).join('')}</div></div>` };
+    },
+    product({ product: p }) {
+      return { title: p.name, html: `<section class="stage stage-p"><img src="${$.productImage(p)}" alt="${e(p.name)}"></section><section class="wrap wd"><div class="wd-t"><a class="dim" href="#/artworks">Artworks</a><h1>${e(p.name)}</h1><p class="dim">${e(p.artist ? $.artistById(p.artist).name : 'Halden Editions')}</p></div>
+        <dl class="specs">${p.spec.map(([k, v]) => `<div><dt>${e(k)}</dt><dd>${e(v)}</dd></div>`).join('')}<div><dt>Price</dt><dd>${$.money(p.price)}</dd></div></dl><div class="wd-act"><div class="btns"><button class="btn" data-add="${p.id}">Add to cart</button></div>${p.kind === 'edition' ? `<div class="apbox"><span class="tag">View in your space</span>${$.widgetArtwork($.workById(p.work))}</div>` : ''}</div></section>` };
+    },
+    cart() {
+      const l = $.cart.list();
+      return { title: 'Cart', html: pageHead('Cart') + `<div class="wrap">${l.length ? `<div class="cart">${l.map(({ p, q }) => `<div class="ci"><img src="${$.productImage(p)}" alt=""><div><a href="${$.productHref(p)}">${e(p.name)}</a><br><span class="dim">${$.money(p.price)}</span></div><div class="qty"><button data-qty="-1" data-id="${p.id}">−</button><span>${q}</span><button data-qty="1" data-id="${p.id}">+</button></div><b>${$.money(p.price * q)}</b></div>`).join('')}
+        <div class="tot"><span>Subtotal</span><b>${$.money($.cart.total())}</b></div><p class="dim">Shipping, insurance and taxes are calculated at checkout.</p><button class="btn" onclick="this.outerHTML='<p>Demo template — checkout is connected when the site goes live.</p>'">Checkout ${arrow}</button></div>` : `<p class="dim">Your cart is empty.</p><a class="btn" href="#/artworks">Browse artworks ${arrow}</a>`}</div>` };
+    },
+    contact() {
+      return { title: 'Contact', html: pageHead('Contact') + `<div class="wrap ct2"><div><h4 class="tag">Visit</h4><p>${A.gallery.address.join('<br>')}</p><p class="dim">${A.gallery.hours}</p><h4 class="tag">Get in touch</h4><p>${A.gallery.phone}<br><a href="mailto:${A.gallery.email}">${A.gallery.email}</a></p></div>${contactForm('')}</div>` };
+    },
+    notFound() { return { title: 'Not found', html: pageHead('Not found', '<a href="#/">Back to home</a>') }; }
+  };
+
+  function layout(html, r) {
+    const top = r.path.split('/')[0];
+    return `<header class="hd ${r.name === 'home' || r.name === 'exhibition' || /^(artist|bio|works|artistExhibitions|artistNews|links|artistContact)$/.test(r.name) ? 'over' : ''}"><a class="logo" href="#/">HALDEN</a>
+      <div class="hd-r"><a href="#/cart" class="cartb"><span class="ico">${$.ICON.bag}</span><span data-cart-count>0</span></a><button class="menub" data-toggle="menu-open">Menu</button></div></header>
+      <div class="overlay"><button class="closeb" data-toggle="menu-open" aria-label="Close"><span class="ico">${$.ICON.close}</span></button><nav>${NAV.map(([k, l], i) => `<a href="#/${k}" class="${top === k ? 'on' : ''}"><small>0${i + 1}</small>${l}</a>`).join('')}</nav>
+        <div class="ov-ft dim">${A.gallery.address.join(' · ')}<br>${A.gallery.hours}</div></div>
+      <main>${html}</main>
+      <footer class="ft"><div class="ft-big">HALDEN</div><div class="ft-cols"><div><h4 class="tag">Visit</h4><p class="dim">${A.gallery.address.join('<br>')}<br>${A.gallery.hours}</p></div><div><h4 class="tag">Explore</h4>${NAV.map(([k, l]) => `<a href="#/${k}">${l}</a>`).join('')}</div>
+        <div><h4 class="tag">Follow</h4>${$.socialList(A.gallery.social).map(s => `<a href="${s.url}" target="_blank" rel="noopener">${s.name}</a>`).join('')}</div>
+        <form data-demo="You’re on the list." class="nl"><h4 class="tag">Newsletter</h4><div><input type="email" required placeholder="Your email"><button aria-label="Subscribe">${arrow}</button></div></form></div></footer>`;
+  }
+  let timer;
+  function after(r) {
+    clearInterval(timer);
+    if (r.name !== 'home') return;
+    const sl = [...document.querySelectorAll('.slide')], dots = [...document.querySelectorAll('[data-slide]')]; let i = 0;
+    const go = n => { i = n; sl.forEach((s, j) => s.classList.toggle('on', j === i)); dots.forEach((s, j) => s.classList.toggle('on', j === i)); };
+    dots.forEach(d => d.onclick = () => { go(+d.dataset.slide); clearInterval(timer); });
+    timer = setInterval(() => go((i + 1) % sl.length), 5000);
+  }
+  window.THEME = { siteName: 'Halden Gallery', layout, views, after };
+})();
+</script><script>APT.start(window.THEME)</script>
+</body></html>
