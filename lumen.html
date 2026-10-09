@@ -35,40 +35,18 @@ body.ap-offline .ap-slot--ve .ap-fallback{min-height:220px;justify-content:cente
 /* ArtPlacer button grid (per graphic) */
 .ap-hidden{display:none!important}
 body.ap-offline .ap-slot .ap-fallback{display:none}
-.apb-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;max-width:420px}
-.apb{display:flex;align-items:center;justify-content:center;gap:10px;min-height:44px;padding:10px 14px;background:#f4f4f4;color:#111;border:0;border-radius:0;font:800 13px/1.15 "Nunito Sans",system-ui,sans-serif;letter-spacing:.01em;text-transform:uppercase;text-align:center;cursor:pointer;transition:background .15s}
-.apb:hover{background:#e8e8e8}.apb:focus-visible{outline:2px solid #111;outline-offset:2px}
-.apb-ico{display:inline-flex;width:22px;height:22px;flex:none}.apb-ico svg{width:100%;height:100%}
+.apb-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;max-width:420px}
 /* popup */
-body.apm-open{overflow:hidden}
-.apm{position:fixed;inset:0;z-index:1000;background:rgba(10,10,10,.62);display:flex;align-items:center;justify-content:center;padding:16px;animation:apmf .2s}
-@keyframes apmf{from{opacity:0}}
-.apm-box{background:#fff;color:#111;width:min(920px,100%);max-height:calc(100vh - 32px);overflow:auto;font:400 14px/1.5 "Nunito Sans",system-ui,sans-serif;box-shadow:0 30px 80px rgba(0,0,0,.35)}
-.apm-hd{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;padding:16px 20px;border-bottom:1px solid #eee}
-.apm-hd b{display:block;font-weight:800;text-transform:uppercase;font-size:15px}.apm-hd span{color:#666;font-size:13px}
-.apm-x{background:none;border:0;width:32px;height:32px;padding:4px;color:#111;cursor:pointer;flex:none}.apm-x svg{width:100%;height:100%}
-.apm-ft{padding:10px 20px;border-top:1px solid #eee;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#999;text-align:right}
-.apm-main{display:block;width:100%;height:auto}
-.apm-sr .apm-thumbs{display:flex;gap:8px;padding:12px 20px}.apm-thumbs button{border:2px solid transparent;padding:0;background:none;width:96px;cursor:pointer}.apm-thumbs button.on{border-color:#111}.apm-thumbs img{display:block;width:100%}
-.apm-ar{display:grid;grid-template-columns:minmax(0,260px) 1fr;gap:32px;padding:28px;align-items:center;background:#f7f7f7}
-.apm-phone{width:100%;max-width:260px;margin:0 auto}
-.apm-ar h4{font-size:22px;margin:0 0 12px;font-weight:800}.apm-ar ol{padding-left:18px;margin:0 0 20px}.apm-ar li{margin-bottom:6px}
-.apm-qr{display:grid;grid-template-columns:repeat(7,14px);gap:2px;padding:10px;background:#fff;width:max-content;border:1px solid #ddd}.apm-qr i{width:14px;height:14px;background:#111}
-.apm-yr{padding:20px}
-.apm-drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:340px;border:2px dashed #ccc;background:#fafafa;cursor:pointer;text-align:center;padding:20px}
-.apm-drop b{font-size:16px;text-transform:uppercase;font-weight:800}.apm-drop span{color:#777;font-size:13px}.apm-drop:hover{border-color:#111}
-.apm-stage{position:relative;overflow:hidden;background:#000;touch-action:none}.apm-stage .apm-bg{display:block;width:100%}
-.apm-art{position:absolute;transform:translate(-50%,-50%);box-shadow:0 10px 24px rgba(0,0,0,.35);cursor:grab;max-width:none}
-.apm-ctl{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-top:12px;color:#666;font-size:13px}.apm-ctl label{display:flex;gap:10px;align-items:center}
-@media (max-width:640px){.apm-ar{grid-template-columns:1fr;padding:20px}.apm-phone{max-width:200px}.apm-qr{display:none}.apb{font-size:12px;padding:10px}}
-.apm [hidden]{display:none!important}
-.apm-imgwrap{display:flex;justify-content:center;background:#f4f4f4}
-.apm-img{display:block;max-width:100%;height:auto;max-height:calc(100vh - 160px);width:auto}
-.apm[data-mode=sample] .apm-box{width:min(560px,100%)}
-.apm[data-mode=room] .apm-box,.apm[data-mode=ar] .apm-box{width:min(760px,100%)}
-/* the live ArtPlacer button is triggered by the themed "View in sample room" button */
-.ap-slot .ap-anchor,.ap-slot .ap-anchor~*{display:none!important}
-.ap-slot .artplacer-button{display:none!important}
+/* if a visitor leaves an artwork page before ArtPlacer finishes placing its button, never show it floating */
+
+.ap-sr{margin-top:10px}
+/* ArtPlacer buttons (.artplacer-button) — View in AR, Try in your room, View in a room: ArtPlacer sets inline styles, so overrides need !important.
+   Shared layout: the three buttons are stacked, all the same width and height — View in AR, Try in your room (.apb-grid), then View in a room (.ap-sr). All three share one unselected style; none is highlighted until hovered. Colours and type are set per template. */
+.ap-sr{max-width:420px}
+.ap-slot artplacer{display:block}
+.artplacer-ar-icon{font-size:20px!important;line-height:1!important;letter-spacing:0!important;text-transform:none!important;margin-right:8px!important;flex:none}
+.artplacer-button{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;min-width:0!important;max-width:100%!important;min-height:46px!important;margin:0!important;padding:10px 18px!important;line-height:1.2!important;box-sizing:border-box!important;text-decoration:none!important;transition:background-color .15s,color .15s,border-color .15s,transform .15s,box-shadow .15s}
+.artplacer-button:focus-visible{outline:2px solid currentColor!important;outline-offset:3px!important}
 
 :root{--bg:#fff;--fg:#111;--mute:#8a8a8a;--line:#e8e8e8;--pad:clamp(16px,4vw,56px)}
 body{background:var(--bg);color:var(--fg);font:400 15px/1.55 "Manrope",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
@@ -149,16 +127,13 @@ section{margin-top:96px}
   body.menu-open .nav{display:flex}.nav a{padding:8px 0}.burger{display:block}.cartlink{margin-left:auto}
   .g2,.ag,.g3,.cols,.ft{grid-template-columns:1fr}.alist{columns:1}.nr{grid-template-columns:1fr}.hero-cap{flex-direction:column;align-items:flex-start;gap:6px}
   .ci{grid-template-columns:64px 1fr;}.ci img{width:64px;height:64px}.ft .soc{justify-content:flex-start}.soc-lg a{grid-template-columns:28px 1fr}.soc-lg a .mute{grid-column:2}}
-.artplacer-button{background:#111!important;border-radius:0!important;font-family:inherit!important;letter-spacing:.06em!important;font-weight:600!important}
 /* ArtPlacer buttons — Lumen */
 .apb-grid{gap:10px}
-.apb{background:transparent;color:var(--fg);border:1px solid var(--fg);font:500 14px/1.2 "Manrope",sans-serif;text-transform:none;letter-spacing:0;min-height:46px}
-.apb:hover{background:var(--fg);color:#fff;opacity:1}
-.apm-box{font-family:"Manrope",sans-serif}.apm-hd b{font-weight:600;text-transform:none;font-size:16px}
+.apb-grid .artplacer-button,.ap-sr .artplacer-button{border-radius:0!important;background-color:transparent!important;color:var(--fg)!important;border:1px solid var(--fg)!important;font:500 14px/1.2 "Manrope",sans-serif!important;text-transform:none!important;letter-spacing:0!important;min-height:46px!important}
+.apb-grid .artplacer-button:hover,.ap-sr .artplacer-button:hover{background-color:var(--fg)!important;color:#fff!important;opacity:1!important}
 </style></head>
 <body class="t-lumen"><div id="app"></div>
 <a class="tpl-badge" href="index.html">ArtPlacer template · <b>Lumen</b> · All templates</a>
-<script src="https://widget.artplacer.com/js/script.js"></script>
 <script>/* ArtPlacer Website Templates — shared core (data, generative imagery, router, cart, widgets) */
 (function () {
   'use strict';
@@ -331,6 +306,57 @@ section{margin-top:96px}
   ].forEach(p => A.products.push(p));
   A.gallery = { address: ['214 Calle del Arte', 'Madrid 28012, Spain'], hours: 'Tue–Sat, 11am–7pm', phone: '+34 910 000 000', email: 'info@gallery.example', social: { instagram: 'gallery', facebook: 'gallery', youtube: 'gallery' } };
 
+
+  /* ---------- Artist sites (Artist Themes): each artist's own exhibitions and news ---------- */
+  const ex = (id, artist, title, start, end, venue, kind, virtual, text) => ({ id, artists: [artist], title, start, end, venue, kind, virtual, text });
+  const nw = (id, artist, date, cat, title, body, exId) => ({ id, artists: [artist], date, cat, title, body, ex: exId });
+  A.sites = {
+    'ana-kowalczyk': {
+      exhibitions: [
+        ex('quiet-lines', 'ana-kowalczyk', 'Quiet Lines', '2026-09-10', '2026-11-08', 'Halle Nord Projektraum, Berlin', 'Solo exhibition', true, ['Quiet Lines gathers fourteen new ink drawings made over the past year in Kowalczyk’s Berlin studio. The largest sheet is more than three metres long and holds roughly forty thousand hand-drawn lines.', 'The exhibition is also open as an ArtPlacer Virtual Exhibition, so you can walk the room from anywhere and see each drawing to scale.']),
+        ex('paper-weather', 'ana-kowalczyk', 'Paper Weather', '2027-01-22', '2027-03-20', 'Westhafen Drawing Room, Berlin', 'Solo exhibition', false, ['A new series in which each drawing records a single day: the line slows, quickens or wavers with the weather outside the studio window.']),
+        ex('interference-a', 'ana-kowalczyk', 'Interference', '2026-02-12', '2026-04-04', 'Nove Gallery, Madrid', 'Solo exhibition', false, ['Twenty large ink drawings, each made from thousands of parallel lines. Up close they register every hesitation of the hand; from a distance they ripple like water.']),
+        ex('line-by-line', 'ana-kowalczyk', 'Line by Line', '2024-05-03', '2024-06-29', 'Haus Linde, Leipzig', 'Solo exhibition', true, ['Kowalczyk’s first institutional solo show traced ten years of drawing, from small notebook studies to the first wall-sized sheets.'])],
+      news: [
+        nw('quiet-lines-open', 'ana-kowalczyk', '2026-09-12', 'Exhibition', 'Quiet Lines opens in Berlin — and online', ['Quiet Lines is now open at Halle Nord Projektraum. If you can’t make it to Berlin, the full show is available as an ArtPlacer Virtual Exhibition.', 'Every drawing can also be placed on your own wall at true size with the View in AR and Try in your room buttons.'], 'quiet-lines'),
+        nw('baltic-residency', 'ana-kowalczyk', '2026-07-02', 'Residency', 'Six weeks on the Baltic coast', ['This summer I spent six weeks at a small residency by the sea, drawing every morning before the wind picked up. The new sheets will be shown for the first time in Paper Weather.']),
+        nw('line-by-line-book', 'ana-kowalczyk', '2026-04-20', 'Publication', 'Line by Line — the monograph is out', ['The first book on my drawings is out now: 176 pages, more than 80 full-page reproductions and an essay on drawing as a form of attention.']),
+        nw('three-metres', 'ana-kowalczyk', '2026-01-15', 'Studio', 'New paper, new scale', ['A roll of Japanese paper three metres long arrived in the studio this week. The first drawing on it took eleven days.'])] },
+    'ines-marin': {
+      exhibitions: [
+        ex('tidelines', 'ines-marin', 'Tidelines', '2026-09-24', '2026-12-06', 'Casa do Farol, Lisbon', 'Solo exhibition', true, ['Tidelines brings together new panels painted along the coast between Cádiz and Cabo da Roca. Cliffs, ferries and lighthouses dissolve into bands of apricot, rose and violet.', 'Walk the exhibition through the ArtPlacer Virtual Exhibition and see each panel to scale.']),
+        ex('hora-azul-tour', 'ines-marin', 'Hora Azul', '2027-02-05', '2027-04-11', 'Sala Mareas, Cádiz', 'Solo exhibition', false, ['A touring selection of the Hora Azul paintings, shown for the first time in the city where the series began.']),
+        ex('atlantic-i', 'ines-marin', 'Atlantic', '2026-05-08', '2026-07-11', 'Nove Gallery, Madrid', 'Solo exhibition', true, ['Atlantic gathered twelve panels painted over two winters, each one made in the half hour after sunset.']),
+        ex('coastal-light', 'ines-marin', 'Coastal Light', '2025-06-14', '2025-09-01', 'Pavilhão Azul, Porto', 'Group exhibition', false, ['A summer exhibition of painters working along the Atlantic coast of Portugal and Spain.'])],
+      news: [
+        nw('tidelines-open', 'ines-marin', '2026-09-26', 'Exhibition', 'Tidelines is open at Casa do Farol', ['Thank you to everyone who came to the opening. The paintings are on view until December 6, and the whole exhibition can be visited online as an ArtPlacer Virtual Exhibition.'], 'tidelines'),
+        nw('ferry-mural', 'ines-marin', '2026-07-18', 'Commission', 'Sketches for a ferry terminal mural', ['I’m working on studies for a long mural for a river ferry terminal: one continuous horizon, from first light to night, across forty metres.']),
+        nw('atlantic-press', 'ines-marin', '2026-06-02', 'Press', 'Atlantic in the press', ['“Marín paints the minutes after sunset with a tenderness that borders on the devotional,” wrote one critic of Atlantic.'], 'atlantic-i'),
+        nw('hora-azul-edition', 'ines-marin', '2026-03-04', 'Edition', 'A new print edition of Hora Azul', ['Hora Azul is now available as a signed giclée edition of 50, printed on cotton rag paper.'])] },
+    'lucia-ferrer': {
+      exhibitions: [
+        ex('slow-light-l', 'lucia-ferrer', 'Slow Light', '2026-09-18', '2026-11-14', 'Nove Gallery, Madrid', 'Solo exhibition', true, ['Twelve new paintings made over two years in my Madrid studio. Each canvas holds dozens of glazes, so the color seems to arrive slowly, the way light fills a room at dawn.', 'The exhibition is also open as an ArtPlacer Virtual Exhibition.']),
+        ex('forty-glazes', 'lucia-ferrer', 'Forty Glazes', '2027-03-12', '2027-05-23', 'Fundación Arenal, Valencia', 'Solo exhibition', false, ['A survey of ten years of glaze paintings, with studio notes, color tests and the first small canvases from Buenos Aires.']),
+        ex('temperatura', 'lucia-ferrer', 'Temperatura', '2024-10-04', '2024-12-14', 'Galería Elba, Madrid', 'Solo exhibition', true, ['Paintings that move from the coolest ochres to the warmest vermilions, hung as a single slow change in temperature around the room.']),
+        ex('ochre-hours', 'lucia-ferrer', 'Ochre Hours', '2022-04-22', '2022-07-03', 'Rheinufer Kunsthalle, Mainz', 'Solo exhibition', false, ['My first exhibition in Germany: eight large canvases in ochre and rust.'])],
+      news: [
+        nw('slow-light-open', 'lucia-ferrer', '2026-09-25', 'Exhibition', 'Slow Light is open — in Madrid and online', ['Slow Light opened on September 18. The full exhibition is also available as an ArtPlacer Virtual Exhibition for anyone who can’t visit in person.'], 'slow-light-l'),
+        nw('why-linen', 'lucia-ferrer', '2026-06-20', 'Studio notes', 'Why I paint on raw linen', ['Linen drinks the first glazes and gives back a warmth no primer can. A few notes on materials, patience and drying times.']),
+        nw('preparing-slow-light', 'lucia-ferrer', '2026-03-11', 'Studio', 'Preparing Slow Light', ['The last canvases for Slow Light are drying in the studio. Some have more than forty layers.']),
+        nw('arenal-prize', 'lucia-ferrer', '2025-11-30', 'Award', 'Shortlisted for the Arenal Painting Prize', ['I’m honoured to be shortlisted for this year’s Arenal Painting Prize. The winner will be announced in the spring, alongside the Forty Glazes exhibition.'])] },
+    'kenji-arai': {
+      exhibitions: [
+        ex('dice-rooms', 'kenji-arai', 'Dice Rooms', '2026-09-30', '2026-12-19', 'Canal Street Annex, New York', 'Solo exhibition', true, ['Every painting in Dice Rooms began with the same rule — a nine-square grid and five colors — and a roll of the dice for each square.', 'Visit in person or walk the show through the ArtPlacer Virtual Exhibition.']),
+        ex('rule-and-chance-k', 'kenji-arai', 'Rule & Chance', '2026-11-26', '2027-01-30', 'Nove Gallery, Madrid', 'Two-person exhibition with Tomás Ibarra', false, ['A conversation between two painters who love systems: grids, rulers, intervals and dice.']),
+        ex('quilt-city', 'kenji-arai', 'Quilt City', '2025-02-07', '2025-03-29', 'Studio 3B, Brooklyn', 'Open studio', true, ['An open studio of new modular paintings, hung edge to edge like a quilt across one long wall.']),
+        ex('modules', 'kenji-arai', 'Modules', '2023-04-14', '2023-06-24', 'Hudson Paper Hall, New York', 'Solo exhibition', false, ['Small gouache modules on board, shown in changing arrangements every two weeks.'])],
+      news: [
+        nw('dice-rooms-open', 'kenji-arai', '2026-10-01', 'Exhibition', 'Dice Rooms is open — roll your own', ['Dice Rooms is now on view at Canal Street Annex, and online as an ArtPlacer Virtual Exhibition. Bring a die!'], 'dice-rooms'),
+        nw('chance-quilt-edition', 'kenji-arai', '2026-08-22', 'Edition', 'Chance Quilt, a six-color screenprint', ['A new edition of 30, printed by hand in six colors and signed.']),
+        nw('rules-workshop', 'kenji-arai', '2026-05-10', 'Workshop', 'Painting by rules: a weekend workshop', ['Two days of making paintings from simple rules. No experience needed, just curiosity and a pencil.']),
+        nw('new-studio', 'kenji-arai', '2026-02-02', 'Studio', 'A new studio in Brooklyn', ['After eight years in Manhattan, the studio has moved to a bright room by the water in Brooklyn.'])] }
+  };
+
   function artistById(id) { return A.artists.find(a => a.id === id); }
   const workById = id => A.works.find(w => w.id === id), exById = id => A.exhibitions.find(e => e.id === id), newsById = id => A.news.find(n => n.id === id), productById = id => A.products.find(p => p.id === id);
   const worksBy = id => A.works.filter(w => w.artist === id), exBy = id => A.exhibitions.filter(e => e.artists.includes(id)), newsBy = id => A.news.filter(n => n.artists.includes(id));
@@ -344,66 +370,30 @@ section{margin-top:96px}
   const sizeLabel = w => `${w.w} × ${w.h} cm`, sizeIn = w => `${(w.w / 2.54).toFixed(1)} × ${(w.h / 2.54).toFixed(1)} in`;
 
   /* ---------- ArtPlacer embeds (code supplied by ArtPlacer) ---------- */
-  /* ArtPlacer Sample Room widget — button code supplied by ArtPlacer (inserted per artwork page via ArtPlacer.insert).
-     "after" is the only addition: it tells ArtPlacer where to place its button (inside the artwork's widget block) instead of a floating corner button. */
-  const AP_SAMPLE_ROOM = {
-    gallery: "1",
-    default_style: "true",
-    button_width: "auto",
-    resizable: "false",
-    frames: "true",
-    rotate: "false",
-    dimensions_standard: "wxh",
-    default_wall_dimension: "height",
-    unit: "in",
-    catalog: "false",
-    data_capture_form: "false",
-    type: "2",
-    space: "73591",
-    additional_spaces: "73591,73863,295986",
-    artwork: "701308",
-  };
+  /* ---------- ArtPlacer Sample Room: button code exactly as supplied by ArtPlacer ("Other Platforms" manual install, HTML method).
+     Only the "dynamic … here" placeholders are filled from the artwork shown on the page. The script tag sits at the bottom of the page, before </body>. */
+  /* artwork_url must be a public https image that ArtPlacer's servers can download. On an https website the page's own img/works/ is used;
+     on this computer (opened as a file) the same images are read from the GitHub repository artplacer-templates. */
+  const AP_PUBLIC_IMAGES = 'https://nicoicon22.github.io/artplacer-templates/img/works/';
+  /* Opened as a file: ArtPlacer's script opens its window at "//widget.artplacer.com/…", which a file page turns into "file://widget.artplacer.com/…".
+     While ArtPlacer's button is clicked, a temporary <base> makes that address resolve to https. ArtPlacer's code and button are untouched. */
+  if (location.protocol === 'file:') document.addEventListener('click', e => { if (!e.target.closest || !e.target.closest('.artplacer-button')) return;
+    const b = document.createElement('base'); b.href = 'https://widget.artplacer.com/'; document.head.prepend(b); setTimeout(() => b.remove(), 0); }, true);
+  /* The "dynamic … here" values for an artwork: artwork_url, height, title, size, price, artist */
+  function apDynamic(w) { const a = artistById(w.artist), inch = v => (v / 2.54).toFixed(2), q = v => esc(String(v)).replace(/"/g, '&quot;');
+    const url = (location.protocol === 'https:' ? new URL('img/works/', location.href).href : AP_PUBLIC_IMAGES) + w.id + '.jpg';
+    return `artwork_url="${q(url)}" height="${inch(w.h)}" title="${q(w.title)}" size="${inch(w.h)} x ${inch(w.w)}" price="${q(w.status === 'available' ? money(w.price) : '')}" artist="${q(a.name)}"`; }
+  /* ArtPlacer button codes exactly as supplied ("Other Platforms" manual install, HTML method); only the dynamic placeholders are filled */
+  const apAR = w => `<artplacer gallery="9386" button_width="auto" default_wall_dimension="height" unit="in" type="3" bgcolor="#ffffff" bordercolor="#000000" fontcolor="#000000" ${apDynamic(w)}></artplacer>`;
+  const apRoom = w => `<artplacer gallery="9386" button_width="auto" dimensions_standard="hxw" default_wall_dimension="height" unit="in" type="1" resizable="true" frames="true" rotate="true" catalog="true" data_capture_form="false" bgcolor="#ffffff" bordercolor="#000000" fontcolor="#000000" ${apDynamic(w)}></artplacer>`;
+  const apSampleRoom = w => `<artplacer gallery="9386" default_style="true" button_width="auto" resizable="true" frames="true" rotate="true" dimensions_standard="hxw" default_wall_dimension="height" unit="in" catalog="true" data_capture_form="false" type="2" space="73591" additional_spaces="73591,136259,35727" ${apDynamic(w)}></artplacer>`;
   const AP_VIRTUAL = '<iframe width="100%" height="450" src="https://d7mntklkfre1v.cloudfront.net/virtual-exhibitions/?i=22084" frameborder="0" allowfullscreen></iframe>';
-  /* Three ArtPlacer buttons per artwork. Swap any popup image by setting POPUP_IMAGES.ar / .sample / .room to an image URL. */
-  const POPUP_IMAGES = { ar: 'img/popup-ar.jpg', room: 'img/popup-room.jpg' };
-  const AR_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V4a1 1 0 0 1 1-1h3M17 3h3a1 1 0 0 1 1 1v3M21 17v3a1 1 0 0 1-1 1h-3M7 21H4a1 1 0 0 1-1-1v-3"/><path d="M12 6.5l4.5 2.5v5L12 16.5 7.5 14V9z"/><path d="M7.5 9L12 11.5 16.5 9M12 11.5v5"/></svg>';
+  /* Three ArtPlacer buttons per artwork: View in AR (type 3), Try in your room (type 1), View in a room / Sample Room (type 2) */
   function widgetArtwork(w) { if (!w) return '';
-    return `<div class="ap-slot" data-ap="artwork"><div class="apb-grid"><button class="apb" data-apm="ar" data-wid="${w.id}"><span class="apb-ico">${AR_ICON}</span>View in AR</button><button class="apb" data-apm="sample" data-wid="${w.id}">View in sample room</button><button class="apb" data-apm="room" data-wid="${w.id}">Try in your room</button></div><span class="ap-anchor"></span></div>`; }
-  function phoneURI(w) { const k = 'ph:' + w.id; if (cache.has(k)) return cache.get(k); const W = 420, H = 820, r = w.h / w.w, aw = 170, ah = aw * r;
-    const s = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${W} ${H}"><defs><clipPath id="sc"><rect x="22" y="22" width="${W - 44}" height="${H - 44}" rx="42"/></clipPath><filter id="sh"><feDropShadow dx="0" dy="6" stdDeviation="7" flood-opacity=".3"/></filter></defs><rect width="${W}" height="${H}" rx="58" fill="#161616"/><g clip-path="url(#sc)"><rect x="0" y="0" width="${W}" height="${H}" fill="#e9e6e0"/><rect x="0" y="${H * .72}" width="${W}" height="${H * .28}" fill="#c4b39b"/><polygon points="0,${H * .72} ${W},${H * .72} ${W},${H * .74} 0,${H * .74}" fill="#d8d3ca"/><image filter="url(#sh)" x="${(W - aw) / 2}" y="${H * .38 - ah / 2}" width="${aw}" height="${ah}" preserveAspectRatio="none" href="${artURI(w)}" xlink:href="${artURI(w)}"/><g stroke="#fff" stroke-width="3" fill="none" opacity=".9"><path d="M${(W - aw) / 2 - 14},${H * .38 - ah / 2 + 10}v-10h10M${(W + aw) / 2 + 14},${H * .38 - ah / 2 + 10}v-10h-10M${(W - aw) / 2 - 14},${H * .38 + ah / 2 - 10}v10h10M${(W + aw) / 2 + 14},${H * .38 + ah / 2 - 10}v10h-10"/></g><rect x="${W / 2 - 92}" y="${H - 120}" width="184" height="40" rx="20" fill="#000" opacity=".55"/><text x="${W / 2}" y="${H - 94}" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="15" fill="#fff">${w.w} × ${w.h} cm · true size</text></g><rect x="${W / 2 - 50}" y="34" width="100" height="26" rx="13" fill="#161616"/></svg>`;
-    cache.set(k, uri(s)); return cache.get(k); }
-  function apModal(mode, w) {
-    const a = artistById(w.artist), t = { ar: 'View in AR', sample: 'View in sample room', room: 'Try in your room' }[mode];
-    let body;
-    if (POPUP_IMAGES[mode]) body = `<div class="apm-imgwrap"><img class="apm-img apm-img--${mode}" src="${POPUP_IMAGES[mode]}" alt="${t}"></div>`;
-    else if (mode === 'ar') body = `<div class="apm-ar"><img class="apm-phone" src="${POPUP_IMAGES.ar || phoneURI(w)}" alt="Artwork shown on a wall through a phone camera"><div><h4>See it on your wall, at true size</h4><ol><li>Open this page on your phone or tablet.</li><li>Point the camera at an empty wall.</li><li>Tap to place <i>${esc(w.title)}</i> at ${w.w} × ${w.h} cm.</li></ol></div></div>`;
-    else if (mode === 'sample') { const rooms = [0, 1, 2, 3].map(i => roomURI(w.id + 'sr' + i, [w], i === 3));
-      body = `<div class="apm-sr"><img class="apm-main" src="${POPUP_IMAGES.sample || rooms[0]}" alt="Artwork in a sample room"><div class="apm-thumbs">${(POPUP_IMAGES.sample ? [POPUP_IMAGES.sample] : rooms).map((r, i) => `<button data-srimg="${i}" class="${i ? '' : 'on'}"><img src="${r}" alt="Room ${i + 1}"></button>`).join('')}</div></div>`; }
-    else body = POPUP_IMAGES.room ? `<img class="apm-main" src="${POPUP_IMAGES.room}" alt="Artwork in a client's room">` : `<div class="apm-yr"><label class="apm-drop"><input type="file" accept="image/*" hidden><b>Upload a photo of your wall</b><span>JPG or PNG · the artwork is placed at ${w.w} × ${w.h} cm</span></label><div class="apm-stage" hidden><img class="apm-bg" alt="Your room"><img class="apm-art" src="${artURI(w)}" alt="${esc(w.title)}" draggable="false"></div><div class="apm-ctl" hidden><label>Size <input type="range" min="10" max="70" value="28"></label><span>Drag the artwork to position it</span></div></div>`;
-    const m = document.createElement('div'); m.className = 'apm'; m.dataset.mode = mode;
-    m.innerHTML = `<div class="apm-box" role="dialog" aria-modal="true" aria-label="${t}"><div class="apm-hd"><div><b>${t}</b><span>${esc(a.name)}, <i>${esc(w.title)}</i>, ${w.year} · ${w.w} × ${w.h} cm</span></div><button class="apm-x" aria-label="Close">${ICON.close}</button></div>${body}<div class="apm-ft">Powered by ArtPlacer</div></div>`;
-    document.body.appendChild(m); document.body.classList.add('apm-open');
-    const close = () => { m.remove(); document.body.classList.remove('apm-open'); document.removeEventListener('keydown', esc_); };
-    const esc_ = ev => { if (ev.key === 'Escape') close(); }; document.addEventListener('keydown', esc_);
-    m.addEventListener('click', ev => { if (ev.target === m || ev.target.closest('.apm-x')) close();
-      const th = ev.target.closest('[data-srimg]'); if (th) { m.querySelector('.apm-main').src = th.querySelector('img').src; m.querySelectorAll('[data-srimg]').forEach(b => b.classList.toggle('on', b === th)); } });
-    const f = m.querySelector('input[type=file]'); if (f) { const stage = m.querySelector('.apm-stage'), art = m.querySelector('.apm-art'), rng_ = m.querySelector('input[type=range]');
-      f.onchange = () => { const file = f.files[0]; if (!file) return; const rd = new FileReader(); rd.onload = () => { m.querySelector('.apm-bg').src = rd.result; stage.hidden = false; m.querySelector('.apm-ctl').hidden = false; m.querySelector('.apm-drop').hidden = true; }; rd.readAsDataURL(file); };
-      const size = () => art.style.width = rng_.value + '%'; rng_.oninput = size; size(); art.style.left = '50%'; art.style.top = '40%';
-      art.onpointerdown = ev => { ev.preventDefault(); art.setPointerCapture(ev.pointerId); const r = stage.getBoundingClientRect();
-        art.onpointermove = mv => { art.style.left = Math.max(0, Math.min(100, (mv.clientX - r.left) / r.width * 100)) + '%'; art.style.top = Math.max(0, Math.min(100, (mv.clientY - r.top) / r.height * 100)) + '%'; };
-        art.onpointerup = () => { art.onpointermove = null; }; }; }
-    m.querySelector('.apm-x').focus();
-  }
-  document.addEventListener('click', ev => { const b = ev.target.closest('[data-apm]'); if (!b) return; ev.preventDefault(); const w = workById(b.dataset.wid);
-    if (b.dataset.apm === 'sample') { const live = b.closest('.ap-slot').querySelector('.artplacer-button'); if (live) live.click(); else toast('Sample room loads from ArtPlacer'); return; }
-    apModal(b.dataset.apm, w); });
+    return `<div class="ap-slot" data-ap="artwork"><div class="apb-grid"><div class="ap-ar">${apAR(w)}</div><div class="ap-room">${apRoom(w)}</div></div><div class="ap-sr">${apSampleRoom(w)}</div></div>`; }
   function widgetVirtual() { return `<div class="ap-slot ap-slot--ve" data-ap="virtual"><div class="ap-ve">${AP_VIRTUAL}</div></div>`; }
-  function apRefresh() {
-    if (!window.ArtPlacer) return;
-    try { window.ArtPlacer.reset(); } catch (e) { /* ignore */ }
-    if (document.querySelector('.ap-slot .ap-anchor')) window.ArtPlacer.insert(Object.assign({}, AP_SAMPLE_ROOM, { after: '.ap-slot .ap-anchor' }));
-  }
+  /* pages switch without a full reload, so ask ArtPlacer to re-read the <artplacer> tag on the new page (ArtPlacer's own reload method) */
+  function apRefresh() { if (window.ArtPlacer && window.ArtPlacer.reload) window.ArtPlacer.reload(); }
 
   /* ---------- cart (in-memory) ---------- */
   const cart = { items: {}, add(id) { this.items[id] = (this.items[id] || 0) + 1; sync(); toast('Added to cart'); }, set(id, q) { if (q <= 0) delete this.items[id]; else this.items[id] = q; sync(); },
@@ -441,12 +431,20 @@ section{margin-top:96px}
     [/^exhibitions$/, 'exhibitions'], [/^exhibitions\/([\w-]+)$/, 'exhibition', ['eid']], [/^news$/, 'news'], [/^news\/([\w-]+)$/, 'newsItem', ['nid']],
     [/^artworks$/, 'shop'], [/^artworks\/([\w-]+)$/, 'product', ['pid']], [/^cart$/, 'cart'], [/^contact$/, 'contact']
   ];
+  /* Artist Themes: Home, Bio, Artworks → Artwork, Exhibitions → Exhibition, News → News article, Contact */
+  const ROUTES_ARTIST = [[/^$/, 'home'], [/^bio$/, 'bio'], [/^works$/, 'works'], [/^works\/([\w-]+)$/, 'work', ['wid']], [/^exhibitions$/, 'exhibitions'], [/^exhibitions\/([\w-]+)$/, 'exhibition', ['eid']],
+    [/^news$/, 'news'], [/^news\/([\w-]+)$/, 'newsItem', ['nid']], [/^contact$/, 'contact']];
   function route() { const path = (location.hash || '#/').replace(/^#\/?/, '').split('?')[0].replace(/\/$/, '');
-    for (const [re, name, keys] of ROUTES) { const m = path.match(re); if (m) { const params = {}; (keys || []).forEach((k, i) => params[k] = m[i + 1]); return { name, params, path }; } } return { name: 'notFound', params: {}, path }; }
+    for (const [re, name, keys] of (T && T.mode === 'artist' ? ROUTES_ARTIST : ROUTES)) { const m = path.match(re); if (m) { const params = {}; (keys || []).forEach((k, i) => params[k] = m[i + 1]); return { name, params, path }; } } return { name: 'notFound', params: {}, path }; }
   const query = () => new URLSearchParams((location.hash.split('?')[1]) || '');
 
   /* resolve params to objects so views stay simple */
-  function ctx(r) { const p = r.params, c = { route: r, q: query() };
+  function ctxArtist(r) { const p = r.params, c = { route: r, q: query(), artist: artistById(T.artist), site: A.sites[T.artist] };
+    if (p.wid) { c.work = workById(p.wid); if (!c.work || c.work.artist !== T.artist) r.name = 'notFound'; }
+    if (p.eid) { c.ex = c.site.exhibitions.find(x => x.id === p.eid); if (!c.ex) r.name = 'notFound'; }
+    if (p.nid) { c.item = c.site.news.find(x => x.id === p.nid); if (!c.item) r.name = 'notFound'; }
+    return c; }
+  function ctx(r) { if (T && T.mode === 'artist') return ctxArtist(r); const p = r.params, c = { route: r, q: query() };
     if (p.id) c.artist = artistById(p.id); if (p.wid) c.work = workById(p.wid); if (p.eid) c.ex = exById(p.eid); if (p.nid) c.item = newsById(p.nid); if (p.pid) c.product = productById(p.pid);
     if ((p.id && !c.artist) || (p.wid && !c.work) || (p.eid && !c.ex) || (p.nid && !c.item) || (p.pid && !c.product)) r.name = 'notFound';
     return c; }
@@ -593,4 +591,5 @@ section{margin-top:96px}
   window.THEME = { siteName: 'Nove Gallery', layout, views };
 })();
 </script><script>APT.start(window.THEME)</script>
+<script src="https://widget.artplacer.com/js/script.js"></script>
 </body></html>
